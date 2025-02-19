@@ -16,32 +16,54 @@
 <body>
     <h1>TON Wallet Connect</h1>
     <p id="status">Disconnected</p>
-    <button onclick="connectTonWallet()">Connect</button>
+    <button onclick="toggleConnection()">Connect</button>
     <p id="address"></p>
 
     <script>
-        const tonConnectUI = new TonConnectUI({ 
-            manifestUrl: "https://raw.githubusercontent.com/ton-blockchain/dns/refs/heads/main/tonconnect-manifest.json" 
+        const tonConnectUI = new TonConnectUI({
+            manifestUrl: "https://your-website.com/tonconnect-manifest.json" // Update with your manifest URL
         });
 
-        async function connectTonWallet() {
-            try {
-                const walletConnection = await tonConnectUI.connectWallet();
-                if (walletConnection) {
-                    const walletAddress = walletConnection.account.address;
-                    
-                    document.getElementById("status").textContent = "Connected";
-                    document.getElementById("status").classList.add("connected");
-                    document.querySelector("button").textContent = "Disconnect";
+        // Handle connection state changes
+        tonConnectUI.onStatusChange(wallet => {
+            updateUI(!!wallet);
+            if (wallet) {
+                document.getElementById("address").textContent = `Connected to: ${wallet.account.address}`;
+            }
+        });
 
-                    document.getElementById("address").textContent = `Connected to: ${walletAddress}`;
-                    document.getElementById("address").style.display = "block";
+        async function toggleConnection() {
+            if (tonConnectUI.connected) {
+                await tonConnectUI.disconnect();
+            } else {
+                try {
+                    await tonConnectUI.connectWallet();
+                } catch (error) {
+                    console.error("Connection failed:", error);
+                    alert("Connection failed: " + (error.message || "Unknown error"));
                 }
-            } catch (error) {
-                console.error("Failed to connect:", error);
-                alert("Failed to connect to TON wallet. Ensure you have a TON wallet installed.");
             }
         }
+
+        function updateUI(isConnected) {
+            const statusElement = document.getElementById("status");
+            const buttonElement = document.querySelector("button");
+            
+            if (isConnected) {
+                statusElement.textContent = "Connected";
+                statusElement.classList.add("connected");
+                buttonElement.textContent = "Disconnect";
+                document.getElementById("address").style.display = "block";
+            } else {
+                statusElement.textContent = "Disconnected";
+                statusElement.classList.remove("connected");
+                buttonElement.textContent = "Connect";
+                document.getElementById("address").style.display = "none";
+            }
+        }
+
+        // Initial UI setup
+        updateUI(tonConnectUI.connected);
     </script>
 </body>
 </html>
