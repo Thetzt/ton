@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TON Wallet Connect</title>
+    <script src="https://unpkg.com/@tonconnect/ui@latest"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #status { font-size: 20px; margin: 20px; color: red; }
+        .connected { color: green; }
+        button { padding: 10px 20px; font-size: 18px; cursor: pointer; }
+        #address { font-size: 16px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>TON Wallet Connect</h1>
+    <p id="status">Disconnected</p>
+    <button onclick="connectTonWallet()">Connect</button>
+    <p id="address"></p>
+
+    <script>
+        const tonConnectUI = new TonConnectUI({ 
+            manifestUrl: "https://tonkeeper.com/tonconnect-manifest.json" 
+        });
+
+        async function connectTonWallet() {
+            try {
+                const walletConnection = await tonConnectUI.connectWallet();
+                if (walletConnection) {
+                    const walletAddress = walletConnection.account.address;
+                    
+                    document.getElementById("status").textContent = "Connected";
+                    document.getElementById("status").classList.add("connected");
+                    document.querySelector("button").textContent = "Disconnect";
+
+                    document.getElementById("address").textContent = `Connected to: ${walletAddress}`;
+                    document.getElementById("address").style.display = "block";
+                }
+            } catch (error) {
+                console.error("Failed to connect:", error);
+                alert("Failed to connect to TON wallet. Ensure you have a TON wallet installed.");
+            }
+        }
+    </script>
+</body>
+</html>
