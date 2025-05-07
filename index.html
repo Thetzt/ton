@@ -4,270 +4,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="24ea946052fe140b61dbe21ef569fc38438b6cf1" content="24ea946052fe140b61dbe21ef569fc38438b6cf1">
-    <title>Premium MON Faucet</title>
+    <title>MON Faucet with Video Ads & Promo Codes</title>
     <style>
-        /* Previous styles remain, add these new ones */
-        
-        .giveaway-box {
-            width: 22%;
-            height: 100px;
-            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #FFD700 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8B4513;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .faucet-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .balance {
             font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .ad-container {
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .video-ad {
+            width: 100%;
+            max-width: 640px;
+            height: 360px;
+            margin: 0 auto;
+            background: #000;
+        }
+        .ad-label {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+        .promo-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .promo-code {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #2c3e50;
+            margin: 10px 0;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .promo-button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #D4AF37;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-top: 10px;
         }
-        
-        .giveaway-box::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255,255,255,0) 45%,
-                rgba(255,255,255,0.8) 50%,
-                rgba(255,255,255,0) 55%
-            );
-            transform: rotate(30deg);
-            animation: shine 3s infinite;
+        .promo-button:hover {
+            background-color: #27ae60;
         }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
-        }
-        
-        .notification-dot {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 12px;
-            height: 12px;
-            background-color: #ff0000;
-            border-radius: 50%;
-            display: none;
-        }
-        
-        .giveaway-box.claimed {
-            background: linear-gradient(135deg, #cccccc 0%, #999999 100%);
-            color: #666666;
+        .promo-button:disabled {
+            background-color: #95a5a6;
             cursor: not-allowed;
         }
-        
-        .giveaway-box.claimed::before {
-            display: none;
+        .promo-timer {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
         }
-        
-        .claimed-label {
-            position: absolute;
-            bottom: 5px;
-            font-size: 10px;
-            color: #ff0000;
-            font-weight: bold;
+        .success {
+            color: #2ecc71;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .error {
+            color: #e74c3c;
+            margin: 10px 0;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <!-- Previous HTML remains the same until giveaway boxes -->
-    
-    <div class="giveaway-container" id="giveaway-boxes">
-        <div class="giveaway-box" onclick="claimBox(0)">
-            <div class="notification-dot"></div>
-            <span>🎁</span>
-            <div class="claimed-label"></div>
+    <div class="faucet-container">
+        <h1>MON Faucet with Rewards</h1>
+        
+        <div class="balance">
+            Your Balance: <span id="user-balance">0</span> MON
         </div>
-        <div class="giveaway-box" onclick="claimBox(1)">
-            <div class="notification-dot"></div>
-            <span>🎁</span>
-            <div class="claimed-label"></div>
+        
+        <!-- First Video Ad -->
+        <div class="ad-container">
+            <div class="ad-label">Advertisement - Watch to earn MON</div>
+            <iframe src="https://stingy-letter.com/d.mbF/zTd/G/Nkv/ZjGKUv/WejmG9YuFZNUvlXkLPZTPYjzsMOzYQlwNM-zhkkt/NWjfMizONjDCA/0qMyA-" 
+                    class="video-ad" 
+                    frameborder="0" 
+                    allowfullscreen></iframe>
         </div>
-        <div class="giveaway-box" onclick="claimBox(2)">
-            <div class="notification-dot"></div>
-            <span>🎁</span>
-            <div class="claimed-label"></div>
+        
+        <!-- Promo Code Section -->
+        <div class="promo-container">
+            <h3>DAILY PROMO CODE</h3>
+            <div class="promo-code" id="promo-code">MONREWARD</div>
+            <p>Enter this code to claim 0.001 MON</p>
+            <button class="promo-button" id="promo-button" onclick="claimPromoCode()">CLAIM PROMO CODE</button>
+            <div class="promo-timer" id="promo-timer">Next code available in: <span id="promo-countdown">02:00:00</span></div>
         </div>
-        <div class="giveaway-box" onclick="claimBox(3)">
-            <div class="notification-dot"></div>
-            <span>🎁</span>
-            <div class="claimed-label"></div>
+        
+        <!-- Second Video Ad -->
+        <div class="ad-container">
+            <div class="ad-label">Advertisement - Watch to earn MON</div>
+            <iframe src="https://stingy-letter.com/ba3cV.0nPu3Dpjv/b-mvV/J/ZNDj0L2GMRz/M/0XM/DzQaxoLtTLY/zNMazXQKwhNGDyIx" 
+                    class="video-ad" 
+                    frameborder="0" 
+                    allowfullscreen></iframe>
         </div>
+        
+        <div id="success-message" class="success"></div>
+        <div id="error-message" class="error"></div>
     </div>
 
     <script>
-        // Add these variables to track claimed status
-        const claimedByOthers = [false, false, false, false];
-        let lastClaimCheck = 0;
+        // User data
+        const userData = {
+            balance: 0,
+            lastPromoClaim: null
+        };
         
-        // Add to DOMContentLoaded
+        // DOM elements
+        const balanceElement = document.getElementById('user-balance');
+        const promoButton = document.getElementById('promo-button');
+        const promoCountdown = document.getElementById('promo-countdown');
+        const successElement = document.getElementById('success-message');
+        const errorElement = document.getElementById('error-message');
+        
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
-            updateBoxes();
-            startCooldownTimers();
-            checkClaimedStatus(); // Initial check
-            setInterval(checkClaimedStatus, 30000); // Check every 30 seconds
+            startPromoTimer();
+            showPopunderAd();
         });
         
-        // New function to check if rewards were claimed by others
-        function checkClaimedStatus() {
-            const now = Date.now();
-            if (now - lastClaimCheck < 30000) return; // 30 second cooldown
-            
-            lastClaimCheck = now;
-            
-            // Simulate API call to check claimed status
-            // In a real implementation, this would be a fetch() to your backend
-            setTimeout(() => {
-                // Randomly mark 1-2 boxes as claimed by others (for demo)
-                const boxesToClaim = Math.floor(Math.random() * 2) + 1;
-                const availableBoxes = [0,1,2,3].filter(i => !claimedByOthers[i]);
+        // Load user data from localStorage
+        function loadUserData() {
+            const savedData = localStorage.getItem('monFaucetUserData');
+            if (savedData) {
+                Object.assign(userData, JSON.parse(savedData));
+                balanceElement.textContent = userData.balance.toFixed(6);
                 
-                for (let i = 0; i < boxesToClaim && availableBoxes.length > 0; i++) {
-                    const randomIndex = Math.floor(Math.random() * availableBoxes.length);
-                    const boxIndex = availableBoxes[randomIndex];
-                    claimedByOthers[boxIndex] = true;
-                    availableBoxes.splice(randomIndex, 1);
-                }
-                
-                updateBoxNotificationDots();
-            }, 1000);
-        }
-        
-        // Update notification dots
-        function updateBoxNotificationDots() {
-            boxes.forEach((box, index) => {
-                const dot = box.querySelector('.notification-dot');
-                const claimedLabel = box.querySelector('.claimed-label');
-                
-                if (claimedByOthers[index]) {
-                    box.classList.add('claimed');
-                    claimedLabel.textContent = 'CLAIMED';
-                    dot.style.display = 'none';
-                } else {
-                    // Show dot if box is available but wasn't checked recently
+                // Check if promo code is on cooldown
+                if (userData.lastPromoClaim) {
                     const now = new Date();
-                    if (userData.boxCooldowns[index]) {
-                        const tenSecondsAgo = new Date(now.getTime() - 10 * 1000);
-                        dot.style.display = userData.boxCooldowns[index] > tenSecondsAgo ? 'none' : 'block';
-                    } else {
-                        dot.style.display = 'block';
+                    const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+                    if (userData.lastPromoClaim > twoHoursAgo) {
+                        promoButton.disabled = true;
                     }
                 }
-            });
+            }
         }
         
-        // Modified claimBox function
-        function claimBox(boxIndex) {
-            if (claimedByOthers[boxIndex]) {
-                showMessage("This reward was already claimed by another user!", false);
-                return;
-            }
-            
+        // Save user data to localStorage
+        function saveUserData() {
+            localStorage.setItem('monFaucetUserData', JSON.stringify(userData));
+        }
+        
+        // Claim promo code
+        function claimPromoCode() {
             const now = new Date();
             
-            // Check if all boxes were claimed recently
-            if (userData.boxesClaimed >= 4 && userData.lastFullClaim) {
-                const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-                if (userData.lastFullClaim > oneHourAgo) {
-                    showMessage("Please wait 1 hour after claiming all boxes", false);
-                    return;
-                } else {
-                    // Reset if cooldown expired
-                    userData.boxesClaimed = 0;
-                }
-            }
-            
-            // Check if this box is on cooldown
-            if (userData.boxCooldowns[boxIndex]) {
-                const tenSecondsAgo = new Date(now.getTime() - 10 * 1000);
-                if (userData.boxCooldowns[boxIndex] > tenSecondsAgo) {
-                    showMessage("Please wait 10 seconds between box claims", false);
+            // Check if on cooldown
+            if (userData.lastPromoClaim) {
+                const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+                if (userData.lastPromoClaim > twoHoursAgo) {
+                    showMessage("Please wait 2 hours between promo code claims", false);
                     return;
                 }
             }
             
-            // Show ad before claiming (30% chance)
-            if (Math.random() < 0.3) {
-                showFullscreenAd();
-            }
+            // Show popunder ad
+            showPopunderAd();
             
-            // Claim the box
-            userData.balance += 0.0005;
-            userData.boxesClaimed++;
-            userData.boxCooldowns[boxIndex] = now;
-            
-            if (userData.boxesClaimed >= 4) {
-                userData.lastFullClaim = now;
-            }
+            // Claim the promo
+            userData.balance += 0.001;
+            userData.lastPromoClaim = now;
             
             updateBalance();
             saveUserData();
-            updateBoxes();
+            promoButton.disabled = true;
             
-            showMessage(`+0.0005 MON claimed from box ${boxIndex + 1}! Total: ${userData.balance.toFixed(6)} MON`, true);
-            
-            // Start cooldown timer for this box
-            startBoxCooldown(boxIndex);
+            showMessage("Success! 0.001 MON added to your balance from promo code", true);
+            startPromoTimer();
         }
         
-        // Modified updateBoxes function
-        function updateBoxes() {
-            const now = new Date();
+        // Start promo code timer
+        function startPromoTimer() {
+            if (!userData.lastPromoClaim) return;
             
-            boxes.forEach((box, index) => {
-                // Reset basic box styles
-                box.classList.remove('disabled');
-                box.innerHTML = '<div class="notification-dot"></div><span>🎁</span><div class="claimed-label"></div>';
+            const interval = setInterval(function() {
+                const now = new Date();
+                const endTime = new Date(userData.lastPromoClaim.getTime() + 2 * 60 * 60 * 1000);
                 
-                // Check if claimed by others
-                if (claimedByOthers[index]) {
-                    box.classList.add('claimed');
-                    box.querySelector('.claimed-label').textContent = 'CLAIMED';
-                    box.querySelector('.notification-dot').style.display = 'none';
+                if (now >= endTime) {
+                    clearInterval(interval);
+                    promoButton.disabled = false;
+                    promoCountdown.textContent = "00:00:00";
                     return;
                 }
                 
-                // Check if on cooldown
-                if (userData.boxCooldowns[index]) {
-                    const tenSecondsAgo = new Date(now.getTime() - 10 * 1000);
-                    if (userData.boxCooldowns[index] > tenSecondsAgo) {
-                        box.classList.add('disabled');
-                        const overlay = document.createElement('div');
-                        overlay.className = 'cooldown-overlay';
-                        const secondsLeft = Math.ceil((userData.boxCooldowns[index] - tenSecondsAgo) / 1000);
-                        overlay.textContent = `${secondsLeft}s`;
-                        box.appendChild(overlay);
-                    }
-                }
+                const diff = endTime - now;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
                 
-                // Update notification dot
-                updateBoxNotificationDots();
-            });
-            
-            // Check if all boxes are claimed
-            if (userData.boxesClaimed >= 4 && userData.lastFullClaim) {
-                const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-                if (userData.lastFullClaim > oneHourAgo) {
-                    boxes.forEach(box => {
-                        box.classList.add('disabled');
-                    });
-                } else {
-                    // Reset if cooldown expired
-                    userData.boxesClaimed = 0;
-                    saveUserData();
-                }
-            }
+                promoCountdown.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
         }
+        
+        // Update balance display
+        function updateBalance() {
+            balanceElement.textContent = userData.balance.toFixed(6);
+        }
+        
+        // Show message
+        function showMessage(message, isSuccess) {
+            const element = isSuccess ? successElement : errorElement;
+            element.textContent = message;
+            
+            // Clear message after 5 seconds
+            setTimeout(() => {
+                element.textContent = '';
+            }, 5000);
+        }
+        
+        // Show popunder ad
+        function showPopunderAd() {
+            // This would be replaced with actual popunder code from your ad network
+            // For demonstration, we'll simulate it with a new tab
+            setTimeout(() => {
+                window.open('https://stingy-letter.com/popunder', '_blank', 'noopener,noreferrer');
+            }, 1000);
+        }
+        
+        // Auto-show popunder every 5 minutes
+        setInterval(showPopunderAd, 5 * 60 * 1000);
     </script>
 </body>
 </html>
