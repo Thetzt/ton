@@ -3,267 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="24ea946052fe140b61dbe21ef569fc38438b6cf1" content="24ea946052fe140b61dbe21ef569fc38438b6cf1">
-    <title>MON Faucet with Video Ads & Promo Codes</title>
+    <title>Faucet Website - Claim Free Crypto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .faucet-container {
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
         }
         h1 {
-            color: #2c3e50;
-            text-align: center;
+            color: #4CAF50;
         }
-        .balance {
-            font-size: 24px;
-            text-align: center;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-        .ad-container {
-            margin: 25px 0;
-            padding: 15px;
-            background: #f8f8f8;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .video-ad {
-            width: 100%;
-            max-width: 640px;
-            height: 360px;
-            margin: 0 auto;
-            background: #000;
-        }
-        .ad-label {
-            font-size: 12px;
-            color: #777;
-            margin-bottom: 8px;
-        }
-        .promo-container {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        .faucet-box {
             padding: 20px;
-            border-radius: 8px;
             margin: 20px 0;
+            background-color: #f9f9f9;
+            border-radius: 5px;
             text-align: center;
-            border: 1px solid #ddd;
         }
-        .promo-code {
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            color: #2c3e50;
-            margin: 10px 0;
-            background: white;
+        .input-group {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            width: 70%;
             padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            display: inline-block;
+            font-size: 16px;
         }
-        .promo-button {
-            background-color: #2ecc71;
+        button {
+            background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
             font-size: 16px;
-            border-radius: 4px;
+            margin: 4px 2px;
             cursor: pointer;
-            margin-top: 10px;
+            border-radius: 4px;
         }
-        .promo-button:hover {
-            background-color: #27ae60;
+        button:hover {
+            background-color: #45a049;
         }
-        .promo-button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
         }
-        .promo-timer {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-        .success {
-            color: #2ecc71;
-            margin: 10px 0;
+        .stat-box {
             text-align: center;
+            padding: 10px;
         }
-        .error {
-            color: #e74c3c;
-            margin: 10px 0;
+        footer {
             text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #777;
         }
     </style>
 </head>
 <body>
-    <div class="faucet-container">
-        <h1>MON Faucet with Rewards</h1>
+    <div class="container">
+        <header>
+            <h1>Free Crypto Faucet</h1>
+            <p>Claim free cryptocurrency every hour!</p>
+        </header>
         
-        <div class="balance">
-            Your Balance: <span id="user-balance">0</span> MON
+        <div class="faucet-box">
+            <h2>Claim Your Free Coins</h2>
+            <p>Enter your wallet address below and click the button to claim</p>
+            
+            <div class="input-group">
+                <input type="text" id="walletAddress" placeholder="Enter your wallet address here">
+            </div>
+            
+            <button id="claimButton">Claim Now</button>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <h3>24h Payouts</h3>
+                    <p>0.0054 BTC</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Total Users</h3>
+                    <p>1,245</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Last Claim</h3>
+                    <p>0.000012 BTC</p>
+                </div>
+            </div>
         </div>
         
-        <!-- First Video Ad -->
-        <div class="ad-container">
-            <div class="ad-label">Advertisement - Watch to earn MON</div>
-            <iframe src="https://stingy-letter.com/d.mbF/zTd/G/Nkv/ZjGKUv/WejmG9YuFZNUvlXkLPZTPYjzsMOzYQlwNM-zhkkt/NWjfMizONjDCA/0qMyA-" 
-                    class="video-ad" 
-                    frameborder="0" 
-                    allowfullscreen></iframe>
-        </div>
-        
-        <!-- Promo Code Section -->
-        <div class="promo-container">
-            <h3>DAILY PROMO CODE</h3>
-            <div class="promo-code" id="promo-code">MONREWARD</div>
-            <p>Enter this code to claim 0.001 MON</p>
-            <button class="promo-button" id="promo-button" onclick="claimPromoCode()">CLAIM PROMO CODE</button>
-            <div class="promo-timer" id="promo-timer">Next code available in: <span id="promo-countdown">02:00:00</span></div>
-        </div>
-        
-        <!-- Second Video Ad -->
-        <div class="ad-container">
-            <div class="ad-label">Advertisement - Watch to earn MON</div>
-            <iframe src="https://stingy-letter.com/ba3cV.0nPu3Dpjv/b-mvV/J/ZNDj0L2GMRz/M/0XM/DzQaxoLtTLY/zNMazXQKwhNGDyIx" 
-                    class="video-ad" 
-                    frameborder="0" 
-                    allowfullscreen></iframe>
-        </div>
-        
-        <div id="success-message" class="success"></div>
-        <div id="error-message" class="error"></div>
+        <footer>
+            <p>© 2023 Free Crypto Faucet. All rights reserved.</p>
+            <p>By using this service you agree to our Terms of Service.</p>
+        </footer>
     </div>
 
+    <!-- HilltopAds Popunder Script -->
     <script>
-        // User data
-        const userData = {
-            balance: 0,
-            lastPromoClaim: null
-        };
-        
-        // DOM elements
-        const balanceElement = document.getElementById('user-balance');
-        const promoButton = document.getElementById('promo-button');
-        const promoCountdown = document.getElementById('promo-countdown');
-        const successElement = document.getElementById('success-message');
-        const errorElement = document.getElementById('error-message');
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserData();
-            startPromoTimer();
-            showPopunderAd();
+    (function(ykwdpe){
+    var d = document,
+        s = d.createElement('script'),
+        l = d.scripts[d.scripts.length - 1];
+    s.settings = ykwdpe || {};
+    s.src = "//stingy-letter.com/c_Dr9i6ob.2i5ClYS/WPQo9fNhjqM_zTN-DmAa0gMqSJ0Y2CMqzIMu0UMIDtQFyM";
+    s.async = true;
+    s.referrerPolicy = 'no-referrer-when-downgrade';
+    l.parentNode.insertBefore(s, l);
+    })({})
+    </script>
+
+    <script>
+        // Simple button click handler
+        document.getElementById('claimButton').addEventListener('click', function() {
+            const address = document.getElementById('walletAddress').value;
+            if (!address) {
+                alert('Please enter your wallet address');
+                return;
+            }
+            alert('Claim request received! Please wait while we process your request.');
         });
-        
-        // Load user data from localStorage
-        function loadUserData() {
-            const savedData = localStorage.getItem('monFaucetUserData');
-            if (savedData) {
-                Object.assign(userData, JSON.parse(savedData));
-                balanceElement.textContent = userData.balance.toFixed(6);
-                
-                // Check if promo code is on cooldown
-                if (userData.lastPromoClaim) {
-                    const now = new Date();
-                    const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
-                    if (userData.lastPromoClaim > twoHoursAgo) {
-                        promoButton.disabled = true;
-                    }
-                }
-            }
-        }
-        
-        // Save user data to localStorage
-        function saveUserData() {
-            localStorage.setItem('monFaucetUserData', JSON.stringify(userData));
-        }
-        
-        // Claim promo code
-        function claimPromoCode() {
-            const now = new Date();
-            
-            // Check if on cooldown
-            if (userData.lastPromoClaim) {
-                const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
-                if (userData.lastPromoClaim > twoHoursAgo) {
-                    showMessage("Please wait 2 hours between promo code claims", false);
-                    return;
-                }
-            }
-            
-            // Show popunder ad
-            showPopunderAd();
-            
-            // Claim the promo
-            userData.balance += 0.001;
-            userData.lastPromoClaim = now;
-            
-            updateBalance();
-            saveUserData();
-            promoButton.disabled = true;
-            
-            showMessage("Success! 0.001 MON added to your balance from promo code", true);
-            startPromoTimer();
-        }
-        
-        // Start promo code timer
-        function startPromoTimer() {
-            if (!userData.lastPromoClaim) return;
-            
-            const interval = setInterval(function() {
-                const now = new Date();
-                const endTime = new Date(userData.lastPromoClaim.getTime() + 2 * 60 * 60 * 1000);
-                
-                if (now >= endTime) {
-                    clearInterval(interval);
-                    promoButton.disabled = false;
-                    promoCountdown.textContent = "00:00:00";
-                    return;
-                }
-                
-                const diff = endTime - now;
-                const hours = Math.floor(diff / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                
-                promoCountdown.textContent = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-        
-        // Update balance display
-        function updateBalance() {
-            balanceElement.textContent = userData.balance.toFixed(6);
-        }
-        
-        // Show message
-        function showMessage(message, isSuccess) {
-            const element = isSuccess ? successElement : errorElement;
-            element.textContent = message;
-            
-            // Clear message after 5 seconds
-            setTimeout(() => {
-                element.textContent = '';
-            }, 5000);
-        }
-        
-        // Show popunder ad
-        function showPopunderAd() {
-            // This would be replaced with actual popunder code from your ad network
-            // For demonstration, we'll simulate it with a new tab
-            setTimeout(() => {
-                window.open('https://stingy-letter.com/popunder', '_blank', 'noopener,noreferrer');
-            }, 1000);
-        }
-        
-        // Auto-show popunder every 5 minutes
-        setInterval(showPopunderAd, 5 * 60 * 1000);
     </script>
 </body>
 </html>
