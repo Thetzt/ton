@@ -4,200 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="24ea946052fe140b61dbe21ef569fc38438b6cf1" content="24ea946052fe140b61dbe21ef569fc38438b6cf1">
-    <title>Crypto Faucet with Giveaway</title>
+    <title>Premium MON Faucet</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .faucet-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .input-group {
-            margin: 20px 0;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-        }
-        .error {
-            color: #e74c3c;
-            margin-top: 5px;
-        }
-        .success {
-            color: #2ecc71;
-            margin-top: 10px;
-        }
-        .timer {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 18px;
-        }
-        .balance {
-            font-size: 24px;
-            text-align: center;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-        .giveaway-container {
-            display: flex;
-            justify-content: space-between;
-            margin: 30px 0;
-        }
+        /* Previous styles remain, add these new ones */
+        
         .giveaway-box {
             width: 22%;
             height: 100px;
-            background-color: #e74c3c;
+            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #FFD700 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #8B4513;
             font-size: 24px;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        .giveaway-box:hover {
-            transform: scale(1.05);
+        
+        .giveaway-box::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255,255,255,0) 45%,
+                rgba(255,255,255,0.8) 50%,
+                rgba(255,255,255,0) 55%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
         }
-        .giveaway-box.disabled {
-            background-color: #95a5a6;
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            display: none;
+        }
+        
+        .giveaway-box.claimed {
+            background: linear-gradient(135deg, #cccccc 0%, #999999 100%);
+            color: #666666;
             cursor: not-allowed;
         }
-        .giveaway-box::after {
-            content: "🎁";
-            position: absolute;
+        
+        .giveaway-box.claimed::before {
+            display: none;
         }
-        .cooldown-overlay {
+        
+        .claimed-label {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0,0,0,0.7);
-            color: white;
-            text-align: center;
-            padding: 5px;
-            font-size: 12px;
-        }
-        .giveaway-info {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 16px;
+            bottom: 5px;
+            font-size: 10px;
+            color: #ff0000;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="faucet-container">
-        <h1>MON Faucet with Giveaway</h1>
-        
-        <div class="balance">
-            Your Balance: <span id="user-balance">0</span> MON
+    <!-- Previous HTML remains the same until giveaway boxes -->
+    
+    <div class="giveaway-container" id="giveaway-boxes">
+        <div class="giveaway-box" onclick="claimBox(0)">
+            <div class="notification-dot"></div>
+            <span>🎁</span>
+            <div class="claimed-label"></div>
         </div>
-        
-        <div class="input-group">
-            <label for="wallet-address">Your MON Wallet Address:</label>
-            <input type="text" id="wallet-address" placeholder="e.g., 0x71C7656EC7ab88b098defB751B7401B5f6d8976F">
-            <div id="address-error" class="error"></div>
+        <div class="giveaway-box" onclick="claimBox(1)">
+            <div class="notification-dot"></div>
+            <span>🎁</span>
+            <div class="claimed-label"></div>
         </div>
-        
-        <button id="withdraw-button" onclick="withdraw()">WITHDRAW MON</button>
-        
-        <div class="giveaway-info">
-            <p>Click the red boxes below to claim free MON! After claiming all 4 boxes, you'll need to wait 1 hour.</p>
+        <div class="giveaway-box" onclick="claimBox(2)">
+            <div class="notification-dot"></div>
+            <span>🎁</span>
+            <div class="claimed-label"></div>
         </div>
-        
-        <div class="giveaway-container" id="giveaway-boxes">
-            <div class="giveaway-box" onclick="claimBox(0)"></div>
-            <div class="giveaway-box" onclick="claimBox(1)"></div>
-            <div class="giveaway-box" onclick="claimBox(2)"></div>
-            <div class="giveaway-box" onclick="claimBox(3)"></div>
+        <div class="giveaway-box" onclick="claimBox(3)">
+            <div class="notification-dot"></div>
+            <span>🎁</span>
+            <div class="claimed-label"></div>
         </div>
-        
-        <div class="timer">
-            Next full giveaway available in: <span id="full-cooldown">00:00:00</span>
-        </div>
-        
-        <div id="success-message" class="success"></div>
     </div>
 
     <script>
-        // User data
-        const userData = {
-            balance: 0,
-            lastClaim: null,
-            boxesClaimed: 0,
-            lastFullClaim: null,
-            boxCooldowns: [null, null, null, null]
-        };
+        // Add these variables to track claimed status
+        const claimedByOthers = [false, false, false, false];
+        let lastClaimCheck = 0;
         
-        // DOM elements
-        const balanceElement = document.getElementById('user-balance');
-        const fullCooldownElement = document.getElementById('full-cooldown');
-        const successElement = document.getElementById('success-message');
-        const errorElement = document.getElementById('address-error');
-        const boxes = document.querySelectorAll('.giveaway-box');
-        const withdrawButton = document.getElementById('withdraw-button');
-        
-        // Initialize
+        // Add to DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
             updateBoxes();
             startCooldownTimers();
+            checkClaimedStatus(); // Initial check
+            setInterval(checkClaimedStatus, 30000); // Check every 30 seconds
         });
         
-        // Load user data from localStorage
-        function loadUserData() {
-            const savedData = localStorage.getItem('monFaucetUserData');
-            if (savedData) {
-                Object.assign(userData, JSON.parse(savedData));
-                balanceElement.textContent = userData.balance.toFixed(6);
-            }
+        // New function to check if rewards were claimed by others
+        function checkClaimedStatus() {
+            const now = Date.now();
+            if (now - lastClaimCheck < 30000) return; // 30 second cooldown
+            
+            lastClaimCheck = now;
+            
+            // Simulate API call to check claimed status
+            // In a real implementation, this would be a fetch() to your backend
+            setTimeout(() => {
+                // Randomly mark 1-2 boxes as claimed by others (for demo)
+                const boxesToClaim = Math.floor(Math.random() * 2) + 1;
+                const availableBoxes = [0,1,2,3].filter(i => !claimedByOthers[i]);
+                
+                for (let i = 0; i < boxesToClaim && availableBoxes.length > 0; i++) {
+                    const randomIndex = Math.floor(Math.random() * availableBoxes.length);
+                    const boxIndex = availableBoxes[randomIndex];
+                    claimedByOthers[boxIndex] = true;
+                    availableBoxes.splice(randomIndex, 1);
+                }
+                
+                updateBoxNotificationDots();
+            }, 1000);
         }
         
-        // Save user data to localStorage
-        function saveUserData() {
-            localStorage.setItem('monFaucetUserData', JSON.stringify(userData));
+        // Update notification dots
+        function updateBoxNotificationDots() {
+            boxes.forEach((box, index) => {
+                const dot = box.querySelector('.notification-dot');
+                const claimedLabel = box.querySelector('.claimed-label');
+                
+                if (claimedByOthers[index]) {
+                    box.classList.add('claimed');
+                    claimedLabel.textContent = 'CLAIMED';
+                    dot.style.display = 'none';
+                } else {
+                    // Show dot if box is available but wasn't checked recently
+                    const now = new Date();
+                    if (userData.boxCooldowns[index]) {
+                        const tenSecondsAgo = new Date(now.getTime() - 10 * 1000);
+                        dot.style.display = userData.boxCooldowns[index] > tenSecondsAgo ? 'none' : 'block';
+                    } else {
+                        dot.style.display = 'block';
+                    }
+                }
+            });
         }
         
-        // Claim a giveaway box
+        // Modified claimBox function
         function claimBox(boxIndex) {
+            if (claimedByOthers[boxIndex]) {
+                showMessage("This reward was already claimed by another user!", false);
+                return;
+            }
+            
             const now = new Date();
             
             // Check if all boxes were claimed recently
@@ -221,6 +196,11 @@
                 }
             }
             
+            // Show ad before claiming (30% chance)
+            if (Math.random() < 0.3) {
+                showFullscreenAd();
+            }
+            
             // Claim the box
             userData.balance += 0.0005;
             userData.boxesClaimed++;
@@ -240,14 +220,22 @@
             startBoxCooldown(boxIndex);
         }
         
-        // Update boxes appearance
+        // Modified updateBoxes function
         function updateBoxes() {
             const now = new Date();
             
             boxes.forEach((box, index) => {
-                // Reset box
+                // Reset basic box styles
                 box.classList.remove('disabled');
-                box.innerHTML = '🎁';
+                box.innerHTML = '<div class="notification-dot"></div><span>🎁</span><div class="claimed-label"></div>';
+                
+                // Check if claimed by others
+                if (claimedByOthers[index]) {
+                    box.classList.add('claimed');
+                    box.querySelector('.claimed-label').textContent = 'CLAIMED';
+                    box.querySelector('.notification-dot').style.display = 'none';
+                    return;
+                }
                 
                 // Check if on cooldown
                 if (userData.boxCooldowns[index]) {
@@ -261,6 +249,9 @@
                         box.appendChild(overlay);
                     }
                 }
+                
+                // Update notification dot
+                updateBoxNotificationDots();
             });
             
             // Check if all boxes are claimed
@@ -276,115 +267,6 @@
                     saveUserData();
                 }
             }
-        }
-        
-        // Update balance display
-        function updateBalance() {
-            balanceElement.textContent = userData.balance.toFixed(6);
-        }
-        
-        // Show message
-        function showMessage(message, isSuccess) {
-            const element = isSuccess ? successElement : errorElement;
-            element.textContent = message;
-            if (isSuccess) {
-                element.classList.add('success');
-                element.classList.remove('error');
-            } else {
-                element.classList.add('error');
-                element.classList.remove('success');
-            }
-            
-            // Clear message after 5 seconds
-            setTimeout(() => {
-                element.textContent = '';
-            }, 5000);
-        }
-        
-        // Start cooldown timers
-        function startCooldownTimers() {
-            // Box cooldown timers
-            setInterval(() => {
-                updateBoxes();
-            }, 1000);
-            
-            // Full giveaway cooldown timer
-            setInterval(() => {
-                const now = new Date();
-                if (userData.lastFullClaim) {
-                    const endTime = new Date(userData.lastFullClaim.getTime() + 60 * 60 * 1000);
-                    if (now < endTime) {
-                        const diff = endTime - now;
-                        const hours = Math.floor(diff / (1000 * 60 * 60));
-                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                        
-                        fullCooldownElement.textContent = 
-                            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    } else {
-                        fullCooldownElement.textContent = '00:00:00';
-                    }
-                }
-            }, 1000);
-        }
-        
-        // Start individual box cooldown
-        function startBoxCooldown(boxIndex) {
-            const box = boxes[boxIndex];
-            let secondsLeft = 10;
-            
-            const interval = setInterval(() => {
-                secondsLeft--;
-                
-                if (secondsLeft <= 0) {
-                    clearInterval(interval);
-                    updateBoxes();
-                } else {
-                    const overlay = box.querySelector('.cooldown-overlay');
-                    if (overlay) {
-                        overlay.textContent = `${secondsLeft}s`;
-                    }
-                }
-            }, 1000);
-        }
-        
-        // Withdraw function
-        function withdraw() {
-            const address = document.getElementById('wallet-address').value.trim();
-            
-            // Validate address
-            if (!address) {
-                showMessage('Please enter your wallet address', false);
-                return;
-            }
-            
-            // Basic ETH address validation (adjust for MON if different)
-            if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
-                showMessage('Please enter a valid wallet address', false);
-                return;
-            }
-            
-            if (userData.balance <= 0) {
-                showMessage('Your balance is zero', false);
-                return;
-            }
-            
-            // Disable button during processing
-            withdrawButton.disabled = true;
-            withdrawButton.textContent = 'Processing...';
-            
-            // Simulate API call (replace with actual backend call)
-            setTimeout(() => {
-                showMessage(`Success! ${userData.balance.toFixed(6)} MON sent to ${address}`, true);
-                
-                // Reset balance
-                userData.balance = 0;
-                updateBalance();
-                saveUserData();
-                
-                withdrawButton.textContent = 'WITHDRAW MON';
-                withdrawButton.disabled = false;
-            }, 2000);
         }
     </script>
 </body>
