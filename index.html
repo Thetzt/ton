@@ -2,943 +2,853 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tetris Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monad Testnet Faucet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
         :root {
-            --block-size: 25px;
-            --board-width: 10;
-            --board-height: 20;
-            --game-bg: #111827;
-            --grid-border: #374151;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --dark-bg: #111827;
+            --dark-card: #1f2937;
+            --dark-text: #f3f4f6;
+            --light-bg: #f9fafb;
+            --light-card: #ffffff;
+            --light-text: #111827;
+            --transition: all 0.3s ease;
         }
-        
+
         body {
-            touch-action: manipulation;
-            overscroll-behavior: contain;
-            background-color: var(--game-bg);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            user-select: none;
+            transition: var(--transition);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-height: 100vh;
+
+        .dark {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
-        
-        .game-header {
-            padding: 10px;
-            color: white;
+
+        .light {
+            background-color: var(--light-bg);
+            color: var(--light-text);
         }
-        
-        .game-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            flex: 1;
-            overflow: hidden;
-            padding: 10px;
+
+        .logo-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
         }
-        
-        #board {
-            border: 2px solid #6366F1;
-            background-color: var(--game-bg);
-            display: grid;
-            width: calc(var(--block-size) * var(--board-width));
-            height: calc(var(--block-size) * var(--board-height));
-            grid-template-columns: repeat(var(--board-width), 1fr);
-            grid-template-rows: repeat(var(--board-height), 1fr);
-            gap: 1px;
-            position: relative;
+
+        .logo-icon {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 0.5rem;
         }
-        
-        .cell {
-            width: var(--block-size);
-            height: var(--block-size);
-            border: 1px solid var(--grid-border);
+
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
         }
-        
-        .tetromino {
-            border: 1px solid rgba(255, 255, 255, 0.8);
+
+        .dark .card {
+            background-color: var(--dark-card);
         }
-        
-        .controls {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 500px;
-            margin-top: 15px;
+
+        .light .card {
+            background-color: var(--light-card);
         }
-        
-        .btn-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
-        }
-        
+
         .btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 60px;
-            height: 60px;
-            background: rgba(99, 102, 241, 0.8);
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
-            touch-action: manipulation;
-            border: none;
-            outline: none;
+            transition: var(--transition);
+            transform: translateY(0);
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2), 0 2px 4px -1px rgba(99, 102, 241, 0.1);
         }
-        
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.15);
+        }
+
         .btn:active {
-            background: rgba(99, 102, 241, 1);
-            transform: scale(0.95);
+            transform: translateY(0);
         }
-        
-        .rotate-btn {
-            background: rgba(139, 92, 246, 0.8);
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
         }
-        
-        .rotate-btn:active {
-            background: rgba(139, 92, 246, 1);
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
         }
-        
-        .drop-btn {
-            background: rgba(239, 68, 68, 0.8);
-            width: 80px;
-        }
-        
-        .drop-btn:active {
-            background: rgba(239, 68, 68, 1);
-        }
-        
-        .side-btn {
-            width: 80px;
-        }
-        
-        .pause-play {
-            background: rgba(16, 185, 129, 0.8);
-        }
-        
-        .pause-play:active {
-            background: rgba(16, 185, 129, 1);
-        }
-        
-        #game-over {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+
+        .tab-content {
             display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
-        
-        #pause-screen {
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            transition: var(--transition);
+        }
+
+        .nav-link.active::after {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .tx-item {
+            transition: var(--transition);
+        }
+
+        .tx-item:hover {
+            transform: translateX(5px);
+        }
+
+        .avatar {
+            border: 3px solid;
+            border-color: var(--primary);
+        }
+
+        /* Animation for faucet button */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Loading animation */
+        .loading {
             display: none;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 10;
+            justify-content: center;
         }
         
-        /* Block colors */
-        .i-block { background-color: #00ffff; }
-        .j-block { background-color: #0000ff; }
-        .l-block { background-color: #ff7f00; }
-        .o-block { background-color: #ffff00; }
-        .s-block { background-color: #00ff00; }
-        .t-block { background-color: #800080; }
-        .z-block { background-color: #ff0000; }
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+            margin: 0 4px;
+            animation: dot-pulse 1.5s infinite ease-in-out;
+        }
         
-        /* Portrait orientation */
-        @media screen and (max-aspect-ratio: 1/1) {
-            :root {
-                --block-size: min(4.5vw, 23px);
+        .loading-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes dot-pulse {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.6;
             }
-            
-            .controls {
-                margin-top: 10px;
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
             }
-            
-            .btn {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu.show {
+            display: block;
+        }
+
+        /* Balance animation */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
             }
-            
-            .side-btn {
-                width: 65px;
-            }
-            
-            .drop-btn {
-                width: 65px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         
-        /* Landscape orientation */
-        @media screen and (min-aspect-ratio: 1/1) {
-            :root {
-                --block-size: min(3vh, 25px);
-            }
-            
-            .game-container {
-                flex-direction: row;
-            }
-            
-            .game-area {
-                flex-direction: row;
-                gap: 20px;
-            }
-            
-            .controls {
-                max-width: 300px;
-                margin-top: 0;
-                margin-left: 10px;
-            }
-            
-            .btn {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-            }
-            
-            .side-btn {
-                width: 60px;
-            }
-            
-            .drop-btn {
-                width: 60px;
-            }
+        .balance-value {
+            animation: countUp 1s ease-out;
         }
     </style>
 </head>
-<body class="bg-gray-900">
-    <div class="game-container">
-        <div class="game-header">
-            <div class="flex justify-between items-center">
-                <div class="text-white text-xl font-bold">Tetris</div>
-                <div class="flex space-x-4">
-                    <div class="text-center">
-                        <div class="text-indigo-400 text-sm">Score</div>
-                        <div id="score" class="text-white text-lg font-bold">0</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-indigo-400 text-sm">Level</div>
-                        <div id="level" class="text-white text-lg font-bold">1</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-indigo-400 text-sm">Lines</div>
-                        <div id="lines" class="text-white text-lg font-bold">0</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="game-area">
-            <div id="board-container">
-                <div id="board"></div>
-                
-                <div id="pause-screen" class="text-white text-center">
-                    <h2 class="text-3xl font-bold mb-4">PAUSED</h2>
-                    <p class="mb-4">Tap play to continue</p>
-                </div>
-                
-                <div id="game-over" class="text-white text-center">
-                    <h2 class="text-3xl font-bold mb-4">GAME OVER</h2>
-                    <p class="mb-2">Final Score: <span id="final-score">0</span></p>
-                    <button id="restart" class="bg-indigo-600 text-white px-4 py-2 rounded mt-4 hover:bg-indigo-700">
-                        Play Again
-                    </button>
-                </div>
+<body class="light transition-all duration-300">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header & Navigation -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10">
+            <div class="flex items-center mb-6 md:mb-0">
+                <span class="logo-icon"><i class="fas fa-cube"></i></span>
+                <h1 class="text-3xl md:text-4xl logo-text">Monad Testnet Faucet</h1>
             </div>
             
-            <div class="controls">
-                <div class="btn-row justify-center mb-2">
-                    <button class="btn drop-btn" id="hard-drop">
-                        <i class="fas fa-angle-double-down"></i>
-                    </button>
-                </div>
-                
-                <div class="btn-row">
-                    <button class="btn side-btn" id="left">
-                        <i class="fas fa-angle-left"></i>
-                    </button>
-                    <button class="btn" id="rotate">
-                        <i class="fas fa-redo-alt"></i>
-                    </button>
-                    <button class="btn side-btn" id="right">
-                        <i class="fas fa-angle-right"></i>
-                    </button>
-                </div>
-                
-                <div class="btn-row">
-                    <button class="btn pause-play" id="pause-play">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <button class="btn rotate-btn" id="rotate-counter">
-                        <i class="fas fa-undo-alt"></i>
-                    </button>
-                    <button class="btn" id="soft-drop">
-                        <i class="fas fa-angle-down"></i>
-                    </button>
-                </div>
+            <!-- Dark mode toggle -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <button id="dark-mode-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                    <i class="fas fa-moon text-gray-600 dark:text-gray-300" id="theme-icon"></i>
+                </button>
             </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link active text-lg font-medium"><i class="fas fa-home mr-2"></i> Home</a>
+                <a href="#profile" class="nav-link text-lg font-medium"><i class="fas fa-user mr-2"></i> Profile</a>
+                <a href="#history" class="nav-link text-lg font-medium"><i class="fas fa-history mr-2"></i> History</a>
+            </nav>
+
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="mobile-menu rounded-lg shadow-lg mb-6 card">
+            <nav class="flex flex-col">
+                <a href="#home" class="mobile-nav-link active p-4 border-b border-gray-200 dark:border-gray-700"><i class="fas fa-home mr-2"></i> Home</a>
+                <a href="#profile" class="mobile-nav-link p-4 border-b border-gray-200 dark:border-gray-700"><i class="fas fa-user mr-2"></i> Profile</a>
+                <a href="#history" class="mobile-nav-link p-4"><i class="fas fa-history mr-2"></i> History</a>
+            </nav>
         </div>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Home Section -->
+            <section id="home" class="tab-content active">
+                <div class="card p-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">Request Testnet Tokens</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        The Monad Testnet Faucet provides free test tokens for developers to build and test applications on the Monad network.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="wallet-address">
+                            Your Wallet Address
+                        </label>
+                        <input 
+                            type="text" 
+                            id="wallet-address" 
+                            placeholder="Enter your Monad wallet address (0x...)" 
+                            class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-gray-800 dark:text-white"
+                        >
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                            Tokens will be sent to this address. Make sure it's correct!
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                            Amount
+                        </label>
+                        <div class="flex flex-wrap gap-3">
+                            <button class="amount-btn px-4 py-2 rounded-lg border-2 border-indigo-500 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-all">10 MONAD</button>
+                            <button class="amount-btn px-4 py-2 rounded-lg border-2 border-indigo-500 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-all">25 MONAD</button>
+                            <button class="amount-btn px-4 py-2 rounded-lg border-2 border-indigo-500 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-all">50 MONAD</button>
+                            <button class="amount-btn px-4 py-2 rounded-lg border-2 border-indigo-500 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-all">100 MONAD</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <button id="request-button" class="btn btn-primary text-white py-4 px-8 rounded-lg text-lg font-bold pulse-animation">
+                            <span id="button-text">Request Testnet Tokens</span>
+                            <div id="loading" class="loading">
+                                <div class="loading-dot"></div>
+                                <div class="loading-dot"></div>
+                                <div class="loading-dot"></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card p-8">
+                    <h3 class="text-xl font-bold mb-4">Monad Testnet Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">Network Details</h4>
+                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                <li><span class="font-medium">Network Name:</span> Monad Testnet</li>
+                                <li><span class="font-medium">Chain ID:</span> 31337</li>
+                                <li><span class="font-medium">Currency Symbol:</span> MONAD</li>
+                                <li><span class="font-medium">Block Explorer:</span> <a href="#" class="text-indigo-600 dark:text-indigo-400 hover:underline">https://explorer.testnet.monad.network</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">Getting Started</h4>
+                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                <li>1. Request testnet tokens from the faucet</li>
+                                <li>2. Configure your wallet with the network details</li>
+                                <li>3. Use the tokens to deploy and test your contracts</li>
+                                <li>4. Join our <a href="#" class="text-indigo-600 dark:text-indigo-400 hover:underline">Discord community</a> for support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="tab-content">
+                <div class="card p-8 mb-10">
+                    <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                        <div class="flex flex-col items-center">
+                            <div class="relative">
+                                <div class="w-32 h-32 rounded-full overflow-hidden avatar">
+                                    <div class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
+                                        M
+                                    </div>
+                                </div>
+                                <button class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <h2 class="text-xl font-bold mt-4">MonadDev01</h2>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Joined August 2023</p>
+                        </div>
+                        
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-6">Account Details</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1">Connected Wallet</label>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="font-medium text-lg">0x71C...A3F2</span>
+                                        <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1">Total Requests</label>
+                                    <span class="font-medium text-lg">12</span>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1">Current Balance</label>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="font-medium text-lg balance-value">285 MONAD</span>
+                                        <span class="px-2 py-0.5 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 text-xs rounded-full">Testnet</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1">Last Request</label>
+                                    <span class="font-medium text-lg">2 days ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <h4 class="text-lg font-semibold mb-3">API Keys</h4>
+                                <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <div>
+                                        <span class="block font-medium">Testnet Developer Key</span>
+                                        <span class="text-gray-500 dark:text-gray-400 text-sm">Created August 15, 2023</span>
+                                    </div>
+                                    <div>
+                                        <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded text-sm transition-all mr-2">
+                                            Show
+                                        </button>
+                                        <button class="px-3 py-1 bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:hover:bg-red-800 text-red-700 dark:text-red-300 rounded text-sm transition-all">
+                                            Revoke
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="mt-4 px-4 py-2 border border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-all text-sm">
+                                    <i class="fas fa-plus mr-2"></i> Generate New API Key
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-8">
+                    <h3 class="text-xl font-bold mb-6">Account Settings</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-4">Profile Information</h4>
+                            <form>
+                                <div class="mb-4">
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1" for="username">Username</label>
+                                    <input 
+                                        type="text" 
+                                        id="username" 
+                                        value="MonadDev01" 
+                                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-gray-800 dark:text-white"
+                                    >
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1" for="email">Email Address</label>
+                                    <input 
+                                        type="email" 
+                                        id="email" 
+                                        value="dev@example.com" 
+                                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-gray-800 dark:text-white"
+                                    >
+                                </div>
+                                <button type="button" class="btn btn-primary text-white py-2 px-4 rounded-lg text-sm">
+                                    Save Changes
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-4">Notification Preferences</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h5 class="font-medium">Email Notifications</h5>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm">Receive email updates about your token requests</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full bg-gray-300 dark:bg-gray-600">
+                                        <label for="email-toggle" class="absolute left-0 bg-white dark:bg-gray-800 w-6 h-6 rounded-full transition-transform duration-200 ease-in-out transform translate-x-6 cursor-pointer"></label>
+                                        <input type="checkbox" id="email-toggle" name="email-toggle" class="sr-only" checked>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h5 class="font-medium">Browser Notifications</h5>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm">Get notified when tokens are sent to your wallet</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full bg-gray-300 dark:bg-gray-600">
+                                        <label for="browser-toggle" class="absolute left-0 bg-white dark:bg-gray-800 w-6 h-6 rounded-full transition-transform duration-200 ease-in-out transform translate-x-0 cursor-pointer"></label>
+                                        <input type="checkbox" id="browser-toggle" name="browser-toggle" class="sr-only">
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h5 class="font-medium">Marketing Updates</h5>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm">Receive news about Monad network updates</p>
+                                    </div>
+                                    <div class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full bg-gray-300 dark:bg-gray-600">
+                                        <label for="marketing-toggle" class="absolute left-0 bg-white dark:bg-gray-800 w-6 h-6 rounded-full transition-transform duration-200 ease-in-out transform translate-x-0 cursor-pointer"></label>
+                                        <input type="checkbox" id="marketing-toggle" name="marketing-toggle" class="sr-only">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section id="history" class="tab-content">
+                <div class="card p-8">
+                    <h2 class="text-2xl font-bold mb-6">Transaction History</h2>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <div class="flex items-center space-x-4">
+                                <div>
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1" for="filter">Filter</label>
+                                    <select id="filter" class="py-2 px-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800">
+                                        <option value="all">All Transactions</option>
+                                        <option value="sent">Sent</option>
+                                        <option value="received">Received</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 dark:text-gray-400 text-sm mb-1" for="time-range">Time Range</label>
+                                    <select id="time-range" class="py-2 px-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800">
+                                        <option value="all">All Time</option>
+                                        <option value="week">Last 7 Days</option>
+                                        <option value="month">Last 30 Days</option>
+                                        <option value="year">Last Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    placeholder="Search transactions..." 
+                                    class="py-2 pl-10 pr-4 w-full md:w-64 rounded-lg border focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800"
+                                >
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-800">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Date
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Amount
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Transaction
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+                                <tr class="tx-item hover:bg-gray-50 dark:hover:bg-gray-800">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="font-medium">Aug 26, 2023</div>
+                                        <div class="text-gray-500 dark:text-gray-400">12:45 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-xs">
+                                            Received
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        +50 MONAD
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-xs">
+                                            Confirmed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">0x67de...f29a</a>
+                                    </td>
+                                </tr>
+                                <tr class="tx-item hover:bg-gray-50 dark:hover:bg-gray-800">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="font-medium">Aug 25, 2023</div>
+                                        <div class="text-gray-500 dark:text-gray-400">3:22 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-xs">
+                                            Received
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        +100 MONAD
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-xs">
+                                            Confirmed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">0x34ab...912c</a>
+                                    </td>
+                                </tr>
+                                <tr class="tx-item hover:bg-gray-50 dark:hover:bg-gray-800">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="font-medium">Aug 22, 2023</div>
+                                        <div class="text-gray-500 dark:text-gray-400">9:17 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full text-xs">
+                                            Sent
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        -25 MONAD
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-xs">
+                                            Confirmed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">0x79cf...3b4d</a>
+                                    </td>
+                                </tr>
+                                <tr class="tx-item hover:bg-gray-50 dark:hover:bg-gray-800">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="font-medium">Aug 20, 2023</div>
+                                        <div class="text-gray-500 dark:text-gray-400">5:30 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-xs">
+                                            Received
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        +25 MONAD
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-xs">
+                                            Confirmed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">0x45ef...78db</a>
+                                    </td>
+                                </tr>
+                                <tr class="tx-item hover:bg-gray-50 dark:hover:bg-gray-800">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="font-medium">Aug 18, 2023</div>
+                                        <div class="text-gray-500 dark:text-gray-400">11:03 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full text-xs">
+                                            Received
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        +50 MONAD
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-xs">
+                                            Confirmed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">0x23ab...7d2e</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-6 flex items-center justify-between flex-wrap gap-4">
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">
+                            Showing 5 of 12 transactions
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                                Previous
+                            </button>
+                            <button class="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-700 text-white transition-all">
+                                1
+                            </button>
+                            <button class="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                                2
+                            </button>
+                            <button class="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                                3
+                            </button>
+                            <button class="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="mt-20 text-center text-gray-500 dark:text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"><i class="fab fa-github"></i></a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"><i class="fab fa-discord"></i></a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-all"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p>© 2023 Monad Testnet Faucet. All rights reserved.</p>
+        </footer>
     </div>
     
+    <!-- Toast Notification (initially hidden) -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 flex items-center transition-all transform translate-y-20 opacity-0">
+        <div id="toast-icon" class="mr-3 text-green-500">
+            <i class="fas fa-check-circle text-xl"></i>
+        </div>
+        <div>
+            <h4 id="toast-title" class="font-medium">Success!</h4>
+            <p id="toast-message" class="text-sm text-gray-600 dark:text-gray-300">Your request has been processed.</p>
+        </div>
+        <button id="toast-close" class="ml-6 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Game configuration
-            const boardWidth = 10;
-            const boardHeight = 20;
-            const initialSpeed = 1000; // ms between automatic drops
-            
-            // Game state
-            let board = Array(boardHeight).fill().map(() => Array(boardWidth).fill(0));
-            let currentPiece = null;
-            let currentPosition = { x: 0, y: 0 };
-            let score = 0;
-            let level = 1;
-            let lines = 0;
-            let gameInterval = null;
-            let isPaused = false;
-            let isGameOver = false;
-            let dropSpeed = initialSpeed;
-            let touchStartX = 0;
-            let touchStartY = 0;
-            const swipeThreshold = 30;
-            
-            // Audio elements
-            const moveSound = new Audio();
-            moveSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAUAAAiSAAODhMTGBgYHh4jIygoKC4uMzM4ODg+Pj09PUNDSEhISE1NUlJSUldXXFxcXGJiZ2dnZ2xsc3Nzc3h4fX19fYODiIiIiI6Ok5OTk5iYnZ2dnZ2jo6ioqKiurre3t7e9vcLCwsLIyM3Nzc3S0tfX19fd3eLi4uLo6O3t7e3y8vf39/f8/AAARkxBTUUzLjEwMAqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkQg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkig/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBksg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBk2g/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBk/A/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBlBA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkFg/wAABpAAAACAAADSAAAAEAAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==';
-            moveSound.load();
-            
-            const rotateSound = new Audio();
-            rotateSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAGAAAGmwAdHR0dJCQkJCQrKysrMjIyMjI5OTk5QUFBQUE5OTk5MjIyMjIrKysrJCQkJB0dHR0dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7EGQAD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZEIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZIoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZLIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZNIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZOoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZQIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZRgP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
-            rotateSound.load();
-            
-            const lineSound = new Audio();
-            lineSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAtAAAZSAAHDw8XHx8nJy8vNz8/R0dPT1dXX19nZ29vd3d/f4eHj4+Xl5+fp6evr7e3v7/Hx8/P19ff3+fn7+/39wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+xBkAA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAAQxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZCYP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZEgP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZGoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZIwP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZK4P8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZNAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZPIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZRQP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
-            lineSound.load();
-            
-            const gameOverSound = new Audio();
-            gameOverSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAkAAAkoAADAwMJCQkPDw8VFRUbGxshISEnJyctLS0zMzM5OTk/Pz9FRUVLSUtLS0tRUVFRV1dXV11dXV1jY2NjZ2dnZ21tbW1zc3Nze3t7e4GBgYGHh4eHjY2NjZOTk5OZmZmZn5+fn6Wlpaerq6ursLCwsLa2tra8vLy8wsLCwsjIyMjOzs7O1NTU1Nra2trg4ODg5ubm5uzs7Ozy8vLy+Pj4+P8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkIA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkSg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkdA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkng/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkyA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBk8g/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBlHA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBlRg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==';
-            gameOverSound.load();
+        // Tab Navigation
+        const tabLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-            // Tetrominos shapes and colors
-            const tetrominoes = {
-                I: {
-                    shape: [
-                        [0, 0, 0, 0],
-                        [1, 1, 1, 1],
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]
-                    ],
-                    color: 'i-block'
-                },
-                J: {
-                    shape: [
-                        [1, 0, 0],
-                        [1, 1, 1],
-                        [0, 0, 0]
-                    ],
-                    color: 'j-block'
-                },
-                L: {
-                    shape: [
-                        [0, 0, 1],
-                        [1, 1, 1],
-                        [0, 0, 0]
-                    ],
-                    color: 'l-block'
-                },
-                O: {
-                    shape: [
-                        [1, 1],
-                        [1, 1]
-                    ],
-                    color: 'o-block'
-                },
-                S: {
-                    shape: [
-                        [0, 1, 1],
-                        [1, 1, 0],
-                        [0, 0, 0]
-                    ],
-                    color: 's-block'
-                },
-                T: {
-                    shape: [
-                        [0, 1, 0],
-                        [1, 1, 1],
-                        [0, 0, 0]
-                    ],
-                    color: 't-block'
-                },
-                Z: {
-                    shape: [
-                        [1, 1, 0],
-                        [0, 1, 1],
-                        [0, 0, 0]
-                    ],
-                    color: 'z-block'
-                }
-            };
-            
-            // Initialize the game board
-            function initBoard() {
-                const boardEl = document.getElementById('board');
-                boardEl.innerHTML = '';
+        tabLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
                 
-                // Create the grid
-                for (let y = 0; y < boardHeight; y++) {
-                    for (let x = 0; x < boardWidth; x++) {
-                        const cell = document.createElement('div');
-                        cell.classList.add('cell');
-                        cell.dataset.x = x;
-                        cell.dataset.y = y;
-                        boardEl.appendChild(cell);
-                    }
-                }
+                // Remove active class from all tabs
+                tabLinks.forEach(el => el.classList.remove('active'));
+                tabContents.forEach(el => el.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                link.classList.add('active');
+                const target = link.getAttribute('href').substring(1);
+                document.getElementById(target).classList.add('active');
+                
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.remove('show');
+            });
+        });
+        
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('show');
+        });
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        darkModeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light')) {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
             }
-            
-            // Get a random tetromino
-            function getRandomTetromino() {
-                const keys = Object.keys(tetrominoes);
-                const randIndex = Math.floor(Math.random() * keys.length);
-                const key = keys[randIndex];
-                return {
-                    shape: tetrominoes[key].shape,
-                    color: tetrominoes[key].color,
-                    type: key
-                };
-            }
-            
-            // Create a new piece
-            function createNewPiece() {
-                currentPiece = getRandomTetromino();
-                currentPosition = {
-                    x: Math.floor((boardWidth - currentPiece.shape[0].length) / 2),
-                    y: 0
-                };
-                
-                // Check for collision (game over)
-                if (checkCollision(currentPosition.x, currentPosition.y, currentPiece.shape)) {
-                    gameOver();
-                    return false;
-                }
-                
-                return true;
-            }
-            
-            // Draw the current piece on the board
-            function drawPiece() {
-                clearPiece();
-                if (!currentPiece) return;
-                
-                const shape = currentPiece.shape;
-                const color = currentPiece.color;
-                
-                for (let y = 0; y < shape.length; y++) {
-                    for (let x = 0; x < shape[y].length; x++) {
-                        if (shape[y][x] !== 0) {
-                            const boardX = currentPosition.x + x;
-                            const boardY = currentPosition.y + y;
-                            
-                            // Only draw if in bounds
-                            if (boardY >= 0 && boardY < boardHeight && boardX >= 0 && boardX < boardWidth) {
-                                const cell = document.querySelector(`.cell[data-x="${boardX}"][data-y="${boardY}"]`);
-                                if (cell) {
-                                    cell.classList.add('tetromino', color);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Clear the current piece from the board (visual only)
-            function clearPiece() {
-                const cells = document.querySelectorAll('.cell.tetromino');
-                cells.forEach(cell => {
-                    cell.classList.remove('tetromino', 'i-block', 'j-block', 'l-block', 'o-block', 's-block', 't-block', 'z-block');
-                });
-            }
-            
-            // Check for collisions
-            function checkCollision(x, y, shape) {
-                for (let row = 0; row < shape.length; row++) {
-                    for (let col = 0; col < shape[row].length; col++) {
-                        if (shape[row][col] !== 0) {
-                            const boardX = x + col;
-                            const boardY = y + row;
-                            
-                            // Check if out of bounds
-                            if (boardX < 0 || boardX >= boardWidth || boardY >= boardHeight) {
-                                return true;
-                            }
-                            
-                            // Check if already filled
-                            if (boardY >= 0 && board[boardY][boardX] !== 0) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                return false;
-            }
-            
-            // Move the current piece
-            function movePiece(dx, dy) {
-                if (isGameOver || isPaused) return false;
-                
-                const newX = currentPosition.x + dx;
-                const newY = currentPosition.y + dy;
-                
-                if (!checkCollision(newX, newY, currentPiece.shape)) {
-                    currentPosition.x = newX;
-                    currentPosition.y = newY;
-                    drawPiece();
-                    return true;
-                }
-                
-                // If we couldn't move down, lock the piece
-                if (dy > 0) {
-                    lockPiece();
-                    return false;
-                }
-                
-                return false;
-            }
-            
-            // Rotate the current piece
-            function rotatePiece(counterClockwise = false) {
-                if (isGameOver || isPaused) return;
-                
-                // Clone the current shape
-                const currentShape = currentPiece.shape;
-                const length = currentShape.length;
-                
-                // Create a new rotated shape
-                let newShape = Array.from({ length }, () => Array(length).fill(0));
-                
-                if (counterClockwise) {
-                    // Rotate counter-clockwise
-                    for (let y = 0; y < length; y++) {
-                        for (let x = 0; x < length; x++) {
-                            newShape[length - 1 - x][y] = currentShape[y][x];
-                        }
-                    }
+        });
+        
+        // Check user preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (localStorage.getItem('theme') === null && 
+            window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.remove('light');
+            document.body.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Toggle switches
+        document.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const label = this.previousElementSibling;
+                if (this.checked) {
+                    label.classList.add('translate-x-6');
+                    label.classList.remove('translate-x-0');
                 } else {
-                    // Rotate clockwise
-                    for (let y = 0; y < length; y++) {
-                        for (let x = 0; x < length; x++) {
-                            newShape[x][length - 1 - y] = currentShape[y][x];
-                        }
-                    }
+                    label.classList.remove('translate-x-6');
+                    label.classList.add('translate-x-0');
                 }
-                
-                // Check if rotation is possible
-                if (!checkCollision(currentPosition.x, currentPosition.y, newShape)) {
-                    rotateSound.currentTime = 0;
-                    rotateSound.play().catch(e => console.error("Audio play failed:", e));
-                    currentPiece.shape = newShape;
-                    drawPiece();
-                } else {
-                    // Try wall kick - move piece around to make space for rotation
-                    const kicks = [
-                        { x: 1, y: 0 },  // right
-                        { x: -1, y: 0 }, // left
-                        { x: 0, y: -1 }, // up
-                        { x: 2, y: 0 },  // 2 spaces right
-                        { x: -2, y: 0 }  // 2 spaces left
-                    ];
-                    
-                    for (const kick of kicks) {
-                        if (!checkCollision(currentPosition.x + kick.x, currentPosition.y + kick.y, newShape)) {
-                            currentPosition.x += kick.x;
-                            currentPosition.y += kick.y;
-                            currentPiece.shape = newShape;
-                            rotateSound.currentTime = 0;
-                            rotateSound.play().catch(e => console.error("Audio play failed:", e));
-                            drawPiece();
-                            return;
-                        }
-                    }
-                }
+            });
+        });
+        
+        // Amount Selection
+        const amountButtons = document.querySelectorAll('.amount-btn');
+        
+        amountButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                amountButtons.forEach(btn => btn.classList.remove('bg-indigo-500', 'text-white'));
+                this.classList.add('bg-indigo-500', 'text-white');
+            });
+        });
+        
+        // Request Button
+        const requestButton = document.getElementById('request-button');
+        const buttonText = document.getElementById('button-text');
+        const loading = document.getElementById('loading');
+        const walletAddressInput = document.getElementById('wallet-address');
+        
+        requestButton.addEventListener('click', function() {
+            if (!walletAddressInput.value) {
+                showToast('Error', 'Please enter a wallet address', 'error');
+                walletAddressInput.classList.add('ring-2', 'ring-red-500');
+                setTimeout(() => walletAddressInput.classList.remove('ring-2', 'ring-red-500'), 3000);
+                return;
             }
             
-            // Lock the current piece into the board
-            function lockPiece() {
-                const shape = currentPiece.shape;
-                const color = currentPiece.type;
-                
-                for (let y = 0; y < shape.length; y++) {
-                    for (let x = 0; x < shape[y].length; x++) {
-                        if (shape[y][x] !== 0) {
-                            const boardX = currentPosition.x + x;
-                            const boardY = currentPosition.y + y;
-                            
-                            if (boardY >= 0 && boardY < boardHeight && boardX >= 0 && boardX < boardWidth) {
-                                board[boardY][boardX] = color;
-                                
-                                // Update the appearance of the locked cell
-                                const cell = document.querySelector(`.cell[data-x="${boardX}"][data-y="${boardY}"]`);
-                                if (cell) {
-                                    cell.classList.remove('tetromino');
-                                    cell.classList.add(currentPiece.color);
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                clearLines();
-                createNewPiece();
+            buttonText.style.display = 'none';
+            loading.style.display = 'flex';
+            requestButton.classList.remove('pulse-animation');
+            
+            // Simulate API request
+            setTimeout(() => {
+                buttonText.style.display = 'block';
+                loading.style.display = 'none';
+                showToast('Success!', 'Tokens will be sent to your wallet shortly', 'success');
+                requestButton.classList.add('pulse-animation');
+            }, 2000);
+        });
+        
+        // Toast Notification
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toast-title');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = document.getElementById('toast-icon');
+        const toastClose = document.getElementById('toast-close');
+        
+        function showToast(title, message, type = 'success') {
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toastIcon.innerHTML = '<i class="fas fa-check-circle text-xl"></i>';
+                toastIcon.className = 'mr-3 text-green-500';
+            } else if (type === 'error') {
+                toastIcon.innerHTML = '<i class="fas fa-exclamation-circle text-xl"></i>';
+                toastIcon.className = 'mr-3 text-red-500';
+            } else if (type === 'warning') {
+                toastIcon.innerHTML = '<i class="fas fa-exclamation-triangle text-xl"></i>';
+                toastIcon.className = 'mr-3 text-yellow-500';
+            } else if (type === 'info') {
+                toastIcon.innerHTML = '<i class="fas fa-info-circle text-xl"></i>';
+                toastIcon.className = 'mr-3 text-blue-500';
             }
             
-            // Check and clear completed lines
-            function clearLines() {
-                let linesCleared = 0;
-                
-                for (let y = boardHeight - 1; y >= 0; y--) {
-                    const isLineComplete = board[y].every(cell => cell !== 0);
-                    
-                    if (isLineComplete) {
-                        linesCleared++;
-                        // Move all rows above down one
-                        for (let yy = y; yy > 0; yy--) {
-                            for (let x = 0; x < boardWidth; x++) {
-                                board[yy][x] = board[yy - 1][x];
-                            }
-                        }
-                        
-                        // Clear top row
-                        board[0] = Array(boardWidth).fill(0);
-                        
-                        // Instead of recursing, increment y to check the same row again
-                        y++; 
-                    }
-                }
-                
-                if (linesCleared > 0) {
-                    lineSound.currentTime = 0;
-                    lineSound.play().catch(e => console.error("Audio play failed:", e));
-                    
-                    updateScore(linesCleared);
-                    updateBoard();
-                }
-            }
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
             
-            // Update the visual board to match the data structure
-            function updateBoard() {
-                for (let y = 0; y < boardHeight; y++) {
-                    for (let x = 0; x < boardWidth; x++) {
-                        const cell = document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
-                        if (cell) {
-                            // Clear all class styles first
-                            cell.classList.remove('tetromino', 'i-block', 'j-block', 'l-block', 'o-block', 's-block', 't-block', 'z-block');
-                            
-                            // Apply the appropriate style based on board data
-                            if (board[y][x] !== 0) {
-                                cell.classList.add(tetrominoes[board[y][x]].color);
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Update the score
-            function updateScore(linesCleared) {
-                // Different points for different number of lines cleared
-                const linePoints = [0, 100, 300, 500, 800]; // 0, 1, 2, 3, 4 lines
-                score += linePoints[linesCleared] * level;
-                lines += linesCleared;
-                
-                // Update level every 10 lines
-                const newLevel = Math.floor(lines / 10) + 1;
-                if (newLevel > level) {
-                    level = newLevel;
-                    // Make the game faster
-                    dropSpeed = Math.max(100, initialSpeed - (level - 1) * 100);
-                    
-                    if (gameInterval) {
-                        clearInterval(gameInterval);
-                        gameInterval = setInterval(tick, dropSpeed);
-                    }
-                }
-                
-                // Update the UI
-                document.getElementById('score').textContent = score;
-                document.getElementById('level').textContent = level;
-                document.getElementById('lines').textContent = lines;
-            }
-            
-            // Hard drop the piece (drop all the way down)
-            function hardDrop() {
-                if (isGameOver || isPaused) return;
-                
-                let droppedRows = 0;
-                while (movePiece(0, 1)) {
-                    droppedRows++;
-                }
-                
-                // Add points for hard drop
-                if (droppedRows > 0) {
-                    score += droppedRows * 2;
-                    document.getElementById('score').textContent = score;
-                }
-            }
-            
-            // Game over
-            function gameOver() {
-                isGameOver = true;
-                gameOverSound.play().catch(e => console.error("Audio play failed:", e));
-                
-                if (gameInterval) {
-                    clearInterval(gameInterval);
-                    gameInterval = null;
-                }
-                
-                document.getElementById('final-score').textContent = score;
-                document.getElementById('game-over').style.display = 'flex';
-            }
-            
-            // Toggle pause/play
-            function togglePause() {
-                const pausePlayBtn = document.getElementById('pause-play');
-                const pauseScreen = document.getElementById('pause-screen');
-                
-                if (isGameOver) return;
-                
-                isPaused = !isPaused;
-                
-                if (isPaused) {
-                    clearInterval(gameInterval);
-                    gameInterval = null;
-                    pausePlayBtn.innerHTML = '<i class="fas fa-play"></i>';
-                    pauseScreen.style.display = 'flex';
-                } else {
-                    gameInterval = setInterval(tick, dropSpeed);
-                    pausePlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                    pauseScreen.style.display = 'none';
-                }
-            }
-            
-            // Start a new game
-            function startGame() {
-                // Reset game state
-                isGameOver = false;
-                isPaused = false;
-                score = 0;
-                level = 1;
-                lines = 0;
-                dropSpeed = initialSpeed;
-                board = Array(boardHeight).fill().map(() => Array(boardWidth).fill(0));
-                
-                // Update UI
-                document.getElementById('score').textContent = score;
-                document.getElementById('level').textContent = level;
-                document.getElementById('lines').textContent = lines;
-                document.getElementById('game-over').style.display = 'none';
-                document.getElementById('pause-screen').style.display = 'none';
-                document.getElementById('pause-play').innerHTML = '<i class="fas fa-pause"></i>';
-                
-                // Reset the board
-                initBoard();
-                
-                // Create first piece
-                createNewPiece();
-                drawPiece();
-                
-                // Start the game loop
-                if (gameInterval) {
-                    clearInterval(gameInterval);
-                }
-                gameInterval = setInterval(tick, dropSpeed);
-            }
-            
-            // Game tick - called on each interval
-            function tick() {
-                if (isGameOver || isPaused) return;
-                movePiece(0, 1);
-            }
-            
-            // Button controls
-            function setupControls() {
-                // Keyboard controls
-                document.addEventListener('keydown', (e) => {
-                    if (isGameOver) return;
-                    
-                    switch (e.key) {
-                        case 'ArrowLeft':
-                            movePiece(-1, 0);
-                            moveSound.currentTime = 0;
-                            moveSound.play().catch(err => {});
-                            break;
-                        case 'ArrowRight':
-                            movePiece(1, 0);
-                            moveSound.currentTime = 0;
-                            moveSound.play().catch(err => {});
-                            break;
-                        case 'ArrowDown':
-                            movePiece(0, 1);
-                            break;
-                        case 'ArrowUp':
-                            rotatePiece();
-                            break;
-                        case ' ':
-                            hardDrop();
-                            break;
-                        case 'z':
-                        case 'Z':
-                            rotatePiece(true);
-                            break;
-                        case 'p':
-                        case 'P':
-                            togglePause();
-                            break;
-                        default:
-                            break;
-                    }
-                });
-                
-                // Touch button controls
-                document.getElementById('left').addEventListener('click', () => {
-                    movePiece(-1, 0);
-                    moveSound.currentTime = 0;
-                    moveSound.play().catch(err => {});
-                });
-                
-                document.getElementById('right').addEventListener('click', () => {
-                    movePiece(1, 0);
-                    moveSound.currentTime = 0;
-                    moveSound.play().catch(err => {});
-                });
-                
-                document.getElementById('soft-drop').addEventListener('click', () => {
-                    movePiece(0, 1);
-                });
-                
-                document.getElementById('hard-drop').addEventListener('click', () => {
-                    hardDrop();
-                });
-                
-                document.getElementById('rotate').addEventListener('click', () => {
-                    rotatePiece();
-                });
-                
-                document.getElementById('rotate-counter').addEventListener('click', () => {
-                    rotatePiece(true);
-                });
-                
-                document.getElementById('pause-play').addEventListener('click', () => {
-                    togglePause();
-                });
-                
-                document.getElementById('restart').addEventListener('click', () => {
-                    startGame();
-                });
-                
-                // Touch events for swipe controls
-                const boardEl = document.getElementById('board');
-                
-                boardEl.addEventListener('touchstart', (e) => {
-                    touchStartX = e.touches[0].clientX;
-                    touchStartY = e.touches[0].clientY;
-                }, { passive: true });
-                
-                boardEl.addEventListener('touchmove', (e) => {
-                    if (isGameOver || isPaused) return;
-                    e.preventDefault(); // Prevent scrolling
-                }, { passive: false });
-                
-                boardEl.addEventListener('touchend', (e) => {
-                    if (isGameOver || isPaused) return;
-                    
-                    const touchEndX = e.changedTouches[0].clientX;
-                    const touchEndY = e.changedTouches[0].clientY;
-                    
-                    const diffX = touchEndX - touchStartX;
-                    const diffY = touchEndY - touchStartY;
-                    
-                    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffY) < swipeThreshold) {
-                        // Horizontal swipe
-                        if (diffX > 0) {
-                            movePiece(1, 0); // Right
-                            moveSound.currentTime = 0;
-                            moveSound.play().catch(err => {});
-                        } else {
-                            movePiece(-1, 0); // Left
-                            moveSound.currentTime = 0;
-                            moveSound.play().catch(err => {});
-                        }
-                    } else if (Math.abs(diffY) > swipeThreshold && Math.abs(diffX) < swipeThreshold) {
-                        // Vertical swipe
-                        if (diffY > 0) {
-                            hardDrop(); // Down
-                        } else {
-                            rotatePiece(); // Up
-                        }
-                    }
-                }, { passive: true });
-                
-                // Double tap to rotate
-                let lastTap = 0;
-                boardEl.addEventListener('touchend', (e) => {
-                    const currentTime = new Date().getTime();
-                    const tapLength = currentTime - lastTap;
-                    if (tapLength < 300 && tapLength > 0) {
-                        rotatePiece();
-                        e.preventDefault();
-                    }
-                    lastTap = currentTime;
-                }, { passive: true });
-            }
-            
-            // Fix for iOS Safari 100vh issue
-            function fixIOSViewportHeight() {
-                const viewportHeight = () => {
-                    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-                };
-                
-                window.addEventListener('resize', viewportHeight);
-                window.addEventListener('orientationchange', viewportHeight);
-                viewportHeight();
-            }
-            
-            // Initialize the game
-            function init() {
-                fixIOSViewportHeight();
-                initBoard();
-                setupControls();
-                startGame();
-                
-                // Prevent context menu on touch devices
-                document.addEventListener('contextmenu', e => e.preventDefault());
-            }
-            
-            // Start the game when page loads
-            init();
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 5000);
+        }
+        
+        toastClose.addEventListener('click', () => {
+            toast.classList.add('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-0', 'opacity-100');
         });
     </script>
 </body>
