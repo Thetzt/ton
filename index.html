@@ -1,1126 +1,945 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <!-- Primary Meta Tags -->
-    
-    <title>MMK GAME SHOP</title>
-    <link rel="icon" href="https://mmkgameshop.com/storage/logo/01JVFETHX216CVB733J2E356AT.png">
-
-    <meta name="title" content="MMK GAME SHOP">
-    <meta name="description" content="မနက် ၈ နာရီ မှ ည ၁၀ နာရီအတွင်းဝယ်ယူပါက ၁၀ မိနစ်အတွင်းအကောင့်ထဲ ရောက်လာမှာဖြစ်ပါတယ်&lt;/br&gt; သိလိုသည်များကိုအောက်က Social Platform များကိုဆက်သွယ်မေးမြန်းနိုင်ပါတယ်">
-    <meta name="keywords" content="miniapp, mini app, game items">
-
-    <meta property="og:site_name" content="miniapp.net" />
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="http://mmkgameshop.com/shop/mlbb">
-    <meta property="og:title" content="MMK GAME SHOP">
-    <meta property="og:description" content="မနက် ၈ နာရီ မှ ည ၁၀ နာရီအတွင်းဝယ်ယူပါက ၁၀ မိနစ်အတွင်းအကောင့်ထဲ ရောက်လာမှာဖြစ်ပါတယ်&lt;/br&gt; သိလိုသည်များကိုအောက်က Social Platform များကိုဆက်သွယ်မေးမြန်းနိုင်ပါတယ်">
-    <meta property="og:image" content="http://mmkgameshop.com/storage/logo/01JVFETHX216CVB733J2E356AT.png">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="http://mmkgameshop.com/shop/mlbb">
-    <meta property="twitter:title" content="MMK GAME SHOP">
-    <meta property="twitter:description" content="မနက် ၈ နာရီ မှ ည ၁၀ နာရီအတွင်းဝယ်ယူပါက ၁၀ မိနစ်အတွင်းအကောင့်ထဲ ရောက်လာမှာဖြစ်ပါတယ်&lt;/br&gt; သိလိုသည်များကိုအောက်က Social Platform များကိုဆက်သွယ်မေးမြန်းနိုင်ပါတယ်">
-    <meta property="twitter:image" content="http://mmkgameshop.com/storage/logo/01JVFETHX216CVB733J2E356AT.png">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="tMt68mZgLWhIUfcgJLWgDYohNwuDx51ubprIlfnG">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-
-
-    <link rel="stylesheet" href="https://mmkgameshop.com/shop/css/custom.css">
-    <!-- choose one -->
-    <link rel="stylesheet" href="https://mmkgameshop.com/shop/feather-icons-web/feather.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tetris Mobile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" rel="stylesheet">
     <style>
-    .nav-pills .nav-link.active,
-    .nav-pills .show>.nav-link {
-        background: rgb(0, 0, 0) !important;
-    }
-
-    .product-card {
-        /* background: #1c2236 !important */
-    }
-    .m025{
-        margin-left: -0.25rem !important;
-        margin-right: -0.25rem !important;
-    }
-</style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <style>
-        .themebg{
-            background: #870000;  /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #190A05, #870000);  /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #190A05, #870000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        :root {
+            --block-size: 25px;
+            --board-width: 10;
+            --board-height: 20;
+            --game-bg: #111827;
+            --grid-border: #374151;
         }
-        * {
-            font-family: "Kanit", sans-serif;
-            font-weight: 500;
-            font-style: normal;
-        }
-        .fnbar{
-            background: #0f0c29 !important;
-            border-bottom: 0px !important;
-            border-left: 0px !important;
-            border-right: 0px !important;
-        }
-
-        .stickytop{
-            position: sticky;
-            top: 7px;
-            z-index: 3000;
-        }
-
-        .fs13{
-            font-size: 13px !important;
-        }
-        .fs12{
-            font-size: 12px !important;
-        }
-        .fs15{
-            font-size: 15px !important;
-        }
-        .card{
-            overflow: hidden;
-        }
-        .fs10{
-            font-size: 10px !important;
-        }
-        .fs8{
-            font-size: 8px !important;
-        }
-
-        .plimg{
-            padding-top: 85%;
-            padding-bottom: 1rem;
-        }
-        .plcimg{
-            padding-top: 47%;
-            padding-bottom: 1rem;
-            border-radius: 6%;
-        }
-        .plimg2{
-            padding-top: 85%;
-            padding-bottom: 1rem;
-        }
-
-        .ftext{
-            color: white !important;
-        }
-        .bgmain{
-            background: #8E0E00;  /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            color: rgb(255, 255, 255) !important;
-        }
-        .btn-light{
-            color:linear-gradient(to right, #1F1C18, #8E0E00) !important;
-        }
-
-
-    </style>
-
-</head>
-
-<body>
         
-    
-
-
-    <div class="container-fluid themebg">
-        <div class="row">
-                        <div class="col-12 themebg sticky-top coinheader">
-                <div class="col-12 px-3  mt-2 mx-auto rounded-2">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 mt-0 px-0 px-md-2">
-                                <nav class="navbar  navbar-light  pt-2 nva">
-                                    <div class="container-fluid px-0 d-flex justify-content-between">
-                                                                                                                        <a class="navbar-brand rounded-2 me-0 fs15 border border-light text-light p-2  coin" href="https://mmkgameshop.com/login-user">
-                                        <span id="coin">0</span> &nbsp;ကျပ်
-                                        </a>
-                                                                                <div>
-                                                                                        <button class="navbar-toggler bg-warning" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                                                <span class="navbar-toggler-icon"></span>
-                                            </button>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="offcanvas offcanvas-start themebg" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                                        <div class="offcanvas-header text-light">
-                                          <h5 class="offcanvas-title" id="offcanvasExampleLabel">
-                                            <img class=" rounded" src="https://mmkgameshop.com/storage/logo/01JVFETHX216CVB733J2E356AT.png" style="width:50px;" alt="">
-                                            MMK GAME SHOP
-                                            </h5>
-
-                                          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                        </div>
-                                        <div class="offcanvas-body">
-                                                                                                                                    <a href="https://mmkgameshop.com/register" class="btn btn-light w-100 mb-2">
-                                                <i class="fter feather-user-check"></i>
-                                                <small> Register Account</small>
-                                            </a>
-                                            <a href="https://mmkgameshop.com/login-user" class="btn btn-light w-100 mb-2">
-                                                <i class="fter feather-log-in"></i>
-                                                <small> Login Account</small>
-                                            </a>
-                                                                                    </div>
-                                      </div>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-                        <div class="col-12 px-1 mpadding" style="min-height: 100vh">
-                <div class="container pt-2">
-                    <div class="row">
-                        <div class="col-12 mx-auto mheight col-lg-7  flex-wrap d-flex align-items-start justify-content-center">
-                            <div class="col-12 col-md-8 col-lg-7 mb-0 pt-0 pb-2 px-2">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-                        <div class="carousel-item active">
-                <div class="placeholder-glow">
-                    <span class="placeholder plcimg col-12 card-img-top"></span>
-                </div>
-                <img src="https://mmkgameshop.com/storage/sliders/01JQ0N0N6J72GRR46QA4YVXC63.png" class="d-block w-100 d-none rounded-3" onload="this.classList.remove('d-none'); this.previousElementSibling.classList.add('d-none');" alt="...">
-            </div>
-                    </div>
-    </div>
-</div>
-<div class="col-12 col-md-12 mb-5 pb-5 d-flex flex-wrap mt-1 align-items-center">
-    <div class="card col-12 shadow ">
-        <div class="card-body p-0">
+        body {
+            touch-action: manipulation;
+            overscroll-behavior: contain;
+            background-color: var(--game-bg);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            user-select: none;
+        }
+        
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 100vh;
+        }
+        
+        .game-header {
+            padding: 10px;
+            color: white;
+        }
+        
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            overflow: hidden;
+            padding: 10px;
+        }
+        
+        #board {
+            border: 2px solid #6366F1;
+            background-color: var(--game-bg);
+            display: grid;
+            width: calc(var(--block-size) * var(--board-width));
+            height: calc(var(--block-size) * var(--board-height));
+            grid-template-columns: repeat(var(--board-width), 1fr);
+            grid-template-rows: repeat(var(--board-height), 1fr);
+            gap: 1px;
+            position: relative;
+        }
+        
+        .cell {
+            width: var(--block-size);
+            height: var(--block-size);
+            border: 1px solid var(--grid-border);
+        }
+        
+        .tetromino {
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 15px;
+        }
+        
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        
+        .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(99, 102, 241, 0.8);
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            touch-action: manipulation;
+            border: none;
+            outline: none;
+        }
+        
+        .btn:active {
+            background: rgba(99, 102, 241, 1);
+            transform: scale(0.95);
+        }
+        
+        .rotate-btn {
+            background: rgba(139, 92, 246, 0.8);
+        }
+        
+        .rotate-btn:active {
+            background: rgba(139, 92, 246, 1);
+        }
+        
+        .drop-btn {
+            background: rgba(239, 68, 68, 0.8);
+            width: 80px;
+        }
+        
+        .drop-btn:active {
+            background: rgba(239, 68, 68, 1);
+        }
+        
+        .side-btn {
+            width: 80px;
+        }
+        
+        .pause-play {
+            background: rgba(16, 185, 129, 0.8);
+        }
+        
+        .pause-play:active {
+            background: rgba(16, 185, 129, 1);
+        }
+        
+        #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        #pause-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        /* Block colors */
+        .i-block { background-color: #00ffff; }
+        .j-block { background-color: #0000ff; }
+        .l-block { background-color: #ff7f00; }
+        .o-block { background-color: #ffff00; }
+        .s-block { background-color: #00ff00; }
+        .t-block { background-color: #800080; }
+        .z-block { background-color: #ff0000; }
+        
+        /* Portrait orientation */
+        @media screen and (max-aspect-ratio: 1/1) {
+            :root {
+                --block-size: min(4.5vw, 23px);
+            }
             
+            .controls {
+                margin-top: 10px;
+            }
+            
+            .btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .side-btn {
+                width: 65px;
+            }
+            
+            .drop-btn {
+                width: 65px;
+            }
+        }
+        
+        /* Landscape orientation */
+        @media screen and (min-aspect-ratio: 1/1) {
+            :root {
+                --block-size: min(3vh, 25px);
+            }
+            
+            .game-container {
+                flex-direction: row;
+            }
+            
+            .game-area {
+                flex-direction: row;
+                gap: 20px;
+            }
+            
+            .controls {
+                max-width: 300px;
+                margin-top: 0;
+                margin-left: 10px;
+            }
+            
+            .btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+            
+            .side-btn {
+                width: 60px;
+            }
+            
+            .drop-btn {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <div class="game-container">
+        <div class="game-header">
+            <div class="flex justify-between items-center">
+                <div class="text-white text-xl font-bold">Tetris</div>
+                <div class="flex space-x-4">
+                    <div class="text-center">
+                        <div class="text-indigo-400 text-sm">Score</div>
+                        <div id="score" class="text-white text-lg font-bold">0</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-indigo-400 text-sm">Level</div>
+                        <div id="level" class="text-white text-lg font-bold">1</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-indigo-400 text-sm">Lines</div>
+                        <div id="lines" class="text-white text-lg font-bold">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <div id="board-container">
+                <div id="board"></div>
+                
+                <div id="pause-screen" class="text-white text-center">
+                    <h2 class="text-3xl font-bold mb-4">PAUSED</h2>
+                    <p class="mb-4">Tap play to continue</p>
+                </div>
+                
+                <div id="game-over" class="text-white text-center">
+                    <h2 class="text-3xl font-bold mb-4">GAME OVER</h2>
+                    <p class="mb-2">Final Score: <span id="final-score">0</span></p>
+                    <button id="restart" class="bg-indigo-600 text-white px-4 py-2 rounded mt-4 hover:bg-indigo-700">
+                        Play Again
+                    </button>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="btn-row justify-center mb-2">
+                    <button class="btn drop-btn" id="hard-drop">
+                        <i class="fas fa-angle-double-down"></i>
+                    </button>
+                </div>
+                
+                <div class="btn-row">
+                    <button class="btn side-btn" id="left">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                    <button class="btn" id="rotate">
+                        <i class="fas fa-redo-alt"></i>
+                    </button>
+                    <button class="btn side-btn" id="right">
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                </div>
+                
+                <div class="btn-row">
+                    <button class="btn pause-play" id="pause-play">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="btn rotate-btn" id="rotate-counter">
+                        <i class="fas fa-undo-alt"></i>
+                    </button>
+                    <button class="btn" id="soft-drop">
+                        <i class="fas fa-angle-down"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="col-12">
-            <div class="tab-content " id="nav-tabContent"             onclick="window.location.href='http://mmkgameshop.com/login-user'" >
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <div class="d-flex flex-wrap mb-2 align-items-center m025 product_list ">
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="11💎"
-                        data2="840 ကျပ်" datapid="216" data-currency='mmk'
-                        data-alert="" datapinfo="1" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JK5S1MAYQN4KVHWG41CJ8J8Y.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    11💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    840
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="22💎"
-                        data2="1601 ကျပ်" datapid="217" data-currency='mmk'
-                        data-alert="" datapinfo="32" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JK5S3284M9TG1DAH94338YB7.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    22💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    1601
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="33💎"
-                        data2="2441 ကျပ်" datapid="218" data-currency='mmk'
-                        data-alert="" datapinfo="33" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JK5S40YB0PBAYKPVJC3H71P2.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    33💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    2441
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="44💎"
-                        data2="3152 ကျပ်" datapid="219" data-currency='mmk'
-                        data-alert="" datapinfo="34" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JK5S5Q2NN37SVJDVFA91CRSK.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    44💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    3152
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="56💎"
-                        data2="3953 ကျပ်" datapid="220" data-currency='mmk'
-                        data-alert="" datapinfo="31" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JK5S8D807PB2CYHC6BMZWD6R.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    56💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    3953
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="Weekly Pass"
-                        data2="6000 ကျပ်" datapid="222" data-currency='mmk'
-                        data-alert="" datapinfo="2" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JK5SGNFNAFPCR4ZGNG8DKY47.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    Weekly Pass
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    6000
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="86💎"
-                        data2="4863 ကျပ်" datapid="223" data-currency='mmk'
-                        data-alert="" datapinfo="3" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JMYNN7H3F12BD64D5WCABBQQ.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    86💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    4863
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="172💎"
-                        data2="9650 ကျပ်" datapid="224" data-currency='mmk'
-                        data-alert="" datapinfo="4" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JMYNQTCKGVW80A6C4DDEDDRF.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    172💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    9650
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="257💎"
-                        data2="14313 ကျပ်" datapid="225" data-currency='mmk'
-                        data-alert="" datapinfo="5" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JMYNRVZA4DA8VTJ5DVHVEEC8.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    257💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    14313
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="343💎"
-                        data2="18925 ကျပ်" datapid="226" data-currency='mmk'
-                        data-alert="" datapinfo="12" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JPSS377XWRQC0G3FMFWD1JVQ.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    343💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    18925
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="429💎"
-                        data2="23963 ကျပ်" datapid="227" data-currency='mmk'
-                        data-alert="" datapinfo="13" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JMYNTRJ4AMATJ97TZYYT0SNK.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    429💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    23963
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="515💎"
-                        data2="28575 ကျပ်" datapid="228" data-currency='mmk'
-                        data-alert="" datapinfo="22" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JMYNVA8HM9S8PSRWFTKKAS4M.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    515💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    28575
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="600💎"
-                        data2="33238 ကျပ်" datapid="299" data-currency='mmk'
-                        data-alert="" datapinfo="23" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JMYNYDHS16HWJRG8HF6Z52Y6.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    600💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    33238
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="706💎"
-                        data2="38000 ကျပ်" datapid="592" data-currency='mmk'
-                        data-alert="" datapinfo="6" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JPSS2H1KC6KZ4MGRGPGJN588.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    706💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    38000
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="963💎"
-                        data2="51813 ကျပ်" datapid="593" data-currency='mmk'
-                        data-alert="" datapinfo="14" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JPSS40CJJYD66GN8DX1YRF7N.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    963💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    51813
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="1049💎"
-                        data2="56925 ကျပ်" datapid="594" data-currency='mmk'
-                        data-alert="" datapinfo="21" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3RG2C00Y8Z9XATBN7NY9QB.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    1049💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    56925
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="1135💎"
-                        data2="61463 ကျပ်" datapid="595" data-currency='mmk'
-                        data-alert="" datapinfo="15" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3RK6RZKXKXBTY58PX5JN6A.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    1135💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    61463
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="1412💎"
-                        data2="76000 ကျပ်" datapid="596" data-currency='mmk'
-                        data-alert="" datapinfo="24" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3RPDJ08JMCGCYHNEM3T6KK.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    1412💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    76000
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="2195💎"
-                        data2="113975 ကျပ်" datapid="597" data-currency='mmk'
-                        data-alert="" datapinfo="7" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JSRXGGM4XG09M42PX8XGEDTP.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    2195💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    113975
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="3688💎"
-                        data2="191800 ကျပ်" datapid="598" data-currency='mmk'
-                        data-alert="" datapinfo="8" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3RTNXGH832CN2QQS1MMKDY.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    3688💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    191800
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="5532💎"
-                        data2="289500 ကျပ်" datapid="599" data-currency='mmk'
-                        data-alert="" datapinfo="9" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3RXCZB1JWC6QVX4JBYDABR.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    5532💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    289500
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="9288💎"
-                        data2="480925 ကျပ်" datapid="600" data-currency='mmk'
-                        data-alert="" datapinfo="10" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3RYSWFPKXE50SV1JYEJ7A6.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    9288💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    480925
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="Twilight Pass"
-                        data2="31688 ကျပ်" datapid="601" data-currency='mmk'
-                        data-alert="" datapinfo="11" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JN3STZMH8BY7QDGXPJP5AREA.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    Twilight Pass
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    31688
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="50💎 + 50💎"
-                        data2="3075 ကျပ်" datapid="602" data-currency='mmk'
-                        data-alert="" datapinfo="16" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JSEPTQSC7SXDAHHMX6T687NW.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    50💎 + 50💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    3075
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="150💎 + 150💎"
-                        data2="9268 ကျပ်" datapid="603" data-currency='mmk'
-                        data-alert="" datapinfo="18" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JSEPV5417MTAD9D30R6BMGNN.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    150💎 + 150💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    9268
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="250💎 + 250💎"
-                        data2="15063 ကျပ်" datapid="604" data-currency='mmk'
-                        data-alert="" datapinfo="19" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JSEPVHZ5FKRVKEWFC6ADNRTE.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    250💎 + 250💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    15063
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                        <div class="col-4 mt-2 mt-md-3 col-md-4 col-lg-3 px-1 px-lg-2 px-md-3  " data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="500💎 + 500💎"
-                        data2="30375 ကျပ်" datapid="605" data-currency='mmk'
-                        data-alert="" datapinfo="20" data-game="mlbb">
-                        <div class="placeholder-glow">
-                            <span class="placeholder plimg col-12 card-img-top rounded"></span>
-                        </div>
-                        <div
-                            class="card pt-2 d-none shadow product-card  justify-content-center ">
-                                                        <span class="position-absolute top-0 right-0 translate-middle fs8 badge bg-success">
-                                မစောင့်ရပါ
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
-                                                        <img class="card-img-top mx-auto mt-0" src="https://mmkgameshop.com/storage/images/01JSEPW3M9MVCV1JDPKFCAP198.png" alt="Card image cap" style="width: 45%; margin-bottom:-5px;" onload="this.parentElement.classList.remove('d-none'); this.parentElement.previousElementSibling.classList.add('d-none');">
-                            <div class="card-body pb-2 pt-2 px-0">
-                                <p class="card-text text-nowrap text-secondary fs12 text-center mb-0">
-                                    500💎 + 500💎
-                                </p>
-                                <p class="card-text mb-0  pcolor text-center fs12">
-                                    30375
-                                    ကျပ်
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                                    </div>
-            </div>
-                    </div>
-
-    </div>
     
-    <!--                         modal end-->
-
-    <!--                    diamond recharge end-->
-
-</div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-                        <div class="col-12 pt-2 pb-4 text-center">
-                <a class="text-light text-decoration-none" href="https://mmkgameshop.com/privacy-policy">Privacy Policy</a> |
-                <a class="text-light text-decoration-none" href="https://mmkgameshop.com/terms-and-conditions">Terms & Conditions</a>
-            </div>
-                    </div>
-    </div>
-
-
-    <!-- Scripts -->
-
-    <script src="https://mmkgameshop.com/shop/js/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
-    </script>
-    <script src="https://mmkgameshop.com/shop/js/shop.js"></script>
     <script>
-    const Toast2 = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            // Game configuration
+            const boardWidth = 10;
+            const boardHeight = 20;
+            const initialSpeed = 1000; // ms between automatic drops
+            
+            // Game state
+            let board = Array(boardHeight).fill().map(() => Array(boardWidth).fill(0));
+            let currentPiece = null;
+            let currentPosition = { x: 0, y: 0 };
+            let score = 0;
+            let level = 1;
+            let lines = 0;
+            let gameInterval = null;
+            let isPaused = false;
+            let isGameOver = false;
+            let dropSpeed = initialSpeed;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            const swipeThreshold = 30;
+            
+            // Audio elements
+            const moveSound = new Audio();
+            moveSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAUAAAiSAAODhMTGBgYHh4jIygoKC4uMzM4ODg+Pj09PUNDSEhISE1NUlJSUldXXFxcXGJiZ2dnZ2xsc3Nzc3h4fX19fYODiIiIiI6Ok5OTk5iYnZ2dnZ2jo6ioqKiurre3t7e9vcLCwsLIyM3Nzc3S0tfX19fd3eLi4uLo6O3t7e3y8vf39/f8/AAARkxBTUUzLjEwMAqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkQg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkig/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBksg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBk2g/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBk/A/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBlBA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkFg/wAABpAAAACAAADSAAAAEAAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==';
+            moveSound.load();
+            
+            const rotateSound = new Audio();
+            rotateSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAGAAAGmwAdHR0dJCQkJCQrKysrMjIyMjI5OTk5QUFBQUE5OTk5MjIyMjIrKysrJCQkJB0dHR0dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7EGQAD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZEIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZIoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZLIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZNIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZOoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZQIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZRgP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+            rotateSound.load();
+            
+            const lineSound = new Audio();
+            lineSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAtAAAZSAAHDw8XHx8nJy8vNz8/R0dPT1dXX19nZ29vd3d/f4eHj4+Xl5+fp6evr7e3v7/Hx8/P19ff3+fn7+/39wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+xBkAA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAAQxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZCYP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZEgP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZGoP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZIwP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZK4P8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZNAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZPIP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQZRQP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+            lineSound.load();
+            
+            const gameOverSound = new Audio();
+            gameOverSound.src = 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFzb25pY1N0dWRpb3MuY29tAFRYWFgAAAASAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAkAAAkoAADAwMJCQkPDw8VFRUbGxshISEnJyctLS0zMzM5OTk/Pz9FRUVLSUtLS0tRUVFRV1dXV11dXV1jY2NjZ2dnZ21tbW1zc3Nze3t7e4GBgYGHh4eHjY2NjZOTk5OZmZmZn5+fn6Wlpaerq6ursLCwsLa2tra8vLy8wsLCwsjIyMjOzs7O1NTU1Nra2trg4ODg5ubm5uzs7Ozy8vLy+Pj4+P8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkIA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkSg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkdA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkng/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkyA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBk8g/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBlHA/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBlRg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==';
+            gameOverSound.load();
 
-        $("#smt").click(function(){
-            $(".sloading").LoadingOverlay("show");
-        });
-// -------------------------------------------------------------------------------------------------
-
-    let showPrice=0;
-    function previewImage(event) {
-    var input = event.target;
-    var reader = new FileReader();
-    reader.onload = function () {
-        var img = document.getElementById('preview');
-        $("#preview").removeClass('d-none');
-        img.src = reader.result;
-        img.style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-    }
-
-    var exampleModal = document.getElementById('exampleModal');
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-        // Button that triggered the modal
-        var button = event.relatedTarget
-        $("#count").val(1);
-
-        // Extract info from data-bs-* attributes
-        var recipient = button.getAttribute('data-bs-whatever')
-        var pid = button.getAttribute('datapid')
-        var pInfoId = button.getAttribute('datapinfo')
-        var game = button.getAttribute('data-game')
-        var currency = button.getAttribute('data-currency')
-        var price2 = button.getAttribute('data2')
-        var alert=button.getAttribute('data-alert')
-        if(alert){
-            $("#alert").removeClass('d-none');
-            document.getElementById("alert").innerText = alert;
-        }else{
-            $("#alert").addClass('d-none');
-        }
-        if(game=='mlbb' && pInfoId==2){
-            $(".orderCount").removeClass('d-none');
-        }else{
-            $(".orderCount").addClass('d-none');
-        }
-        $("#price").val(price2);
-        $("#amount").val(`${recipient}`);
-        $("#product_id").val(`${pid}`);
-
-        if(currency == 'bhat') {
-            $('.bhat').removeClass('d-none');
-            $('.mmk').addClass('d-none');
-        }else if(currency == 'mmk'){
-            $('.mmk').removeClass('d-none');
-            $('.bhat').addClass('d-none');
-        }
-
-        $("#show_amount").val(`${recipient}`);
-        $("#show_price").val(price2);
-        showPrice=price2.replace(/[^0-9]/g, "");
-        console.log(pid);
-    })
-    function calculatePrice() {
-        let count = Number($("#count").val()) || 1; // Ensure count is a number (default to 1 if empty)
-        let total = Number(showPrice) * count;
-        $("#show_price").val(total + " ကျပ်"); // Display total in a separate element
-    }
-
-    function checkIdAgain(){
-        const button = document.getElementById("submitButton");
-        const checkbox = document.getElementById("cbox");
-        button.disabled = true;
-        checkbox.checked = false;
-    }
-    function handleCheckbox(checkbox) {
-        const button = document.getElementById("submitButton");
-        if (checkbox.checked) {
-            console.log("Checkbox is checked!");
-            $("#acc_name").removeClass('d-none');
-            $("#acc_name").removeClass('alert-danger');
-            $("#acc_name").addClass('alert-success');
-            $("#acc_name").text("Id စစ်ဆေးနေပါသည်... ခနစောင့်ပါ...");
-            var postData = {
-                game_id: $('#game_id').val(),
-                server_id: $("#server_id").val(),
-            };
-            checkID(postData, function (response) {
-                // console.log(response);
-                if (response.code == 200) {
-                    $("#acc_name").text(response.username);
-                    button.disabled = false;
-                }else{
-                    $("#acc_name").removeClass('alert-success');
-                    $("#acc_name").addClass('alert-danger');
-                    $("#acc_name").removeClass('d-none');
-                    $("#acc_name").text("Id မှားနေပါသည်");
-                    button.disabled = true;
-                    checkbox.checked = false;
+            // Tetrominos shapes and colors
+            const tetrominoes = {
+                I: {
+                    shape: [
+                        [0, 0, 0, 0],
+                        [1, 1, 1, 1],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                    ],
+                    color: 'i-block'
+                },
+                J: {
+                    shape: [
+                        [1, 0, 0],
+                        [1, 1, 1],
+                        [0, 0, 0]
+                    ],
+                    color: 'j-block'
+                },
+                L: {
+                    shape: [
+                        [0, 0, 1],
+                        [1, 1, 1],
+                        [0, 0, 0]
+                    ],
+                    color: 'l-block'
+                },
+                O: {
+                    shape: [
+                        [1, 1],
+                        [1, 1]
+                    ],
+                    color: 'o-block'
+                },
+                S: {
+                    shape: [
+                        [0, 1, 1],
+                        [1, 1, 0],
+                        [0, 0, 0]
+                    ],
+                    color: 's-block'
+                },
+                T: {
+                    shape: [
+                        [0, 1, 0],
+                        [1, 1, 1],
+                        [0, 0, 0]
+                    ],
+                    color: 't-block'
+                },
+                Z: {
+                    shape: [
+                        [1, 1, 0],
+                        [0, 1, 1],
+                        [0, 0, 0]
+                    ],
+                    color: 'z-block'
                 }
-            });
-            // Your function logic here when checked
-        } else {
-            console.log("Checkbox is unchecked!");
-            // Optional: logic for when unchecked
-        }
-    }
-    $("#submitButton").click(function(){
-        $(".sloading").LoadingOverlay("show");
-    });
-    function checkID(postData, callback) {
-        $(".sbtn").LoadingOverlay("show");
-        $.ajax({
-            url: "/check-user",
-            type: "POST",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            contentType: 'application/json',
-            data: JSON.stringify(postData),
-            success: function (data) {
-                let response = JSON.parse(data.response);
-                $(".sbtn").LoadingOverlay("hide");
-                // return data;
-                if (callback) {
-                    callback(response);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-                $(".sbtn").LoadingOverlay("hide");
-            }
-        });
-    }
-    function copyText(id){
-        const copyText = document.getElementById(`copyText${id}`);
-                copyText.select();
-                copyText.setSelectionRange(0, 99999); // For mobile devices
-                document.execCommand("copy");
-                Toast2.fire({
-                    icon: "success",
-                    title: "ငွေလွှဲနံပါတ် ကော်ပီကူးပြီးပါပြီ.. "
-            });
-    }
-
-    // Initially hide the slip-enable div
-    $('.slip-enable').hide();
-
-    // Event handler for radio button change
-    $('input[name="pmethod"]').change(function () {
-        // Check which radio button is selected
-        if ($(this).val() === 'useslip') {
-            // If useslip is selected, show slip-enable div
-            $('.slip-enable').show();
-            $('.slip-disable').hide();
-        } else {// If usecoin is selected, hide slip-enable div
-            $('.slip-enable').hide();
-            $('.slip-disable').show();
-        }
-    });
-
-
-
-
-</script>
-    <script>
-        $(document).ready(function() {
-            var urlMappings = {
-                "/": "#home",
-                "/mlbb": "#mlbb",
-                "/myapp": "#mlbb",
-                "/order": "#order",
-                "/profile": "#profile",
-                "/login": "#login",
             };
-
-            var defaultElement = "#shop";
-
-            // Get the current URL
-            var currentUrl = window.location.pathname;
-
-            // Check if the URL matches any mapping
-            if (urlMappings[currentUrl]) {
-                $(urlMappings[currentUrl]).toggleClass("text-dark");
-            } else {
-                $(defaultElement).toggleClass("text-dark");
+            
+            // Initialize the game board
+            function initBoard() {
+                const boardEl = document.getElementById('board');
+                boardEl.innerHTML = '';
+                
+                // Create the grid
+                for (let y = 0; y < boardHeight; y++) {
+                    for (let x = 0; x < boardWidth; x++) {
+                        const cell = document.createElement('div');
+                        cell.classList.add('cell');
+                        cell.dataset.x = x;
+                        cell.dataset.y = y;
+                        boardEl.appendChild(cell);
+                    }
+                }
             }
-        })
+            
+            // Get a random tetromino
+            function getRandomTetromino() {
+                const keys = Object.keys(tetrominoes);
+                const randIndex = Math.floor(Math.random() * keys.length);
+                const key = keys[randIndex];
+                return {
+                    shape: tetrominoes[key].shape,
+                    color: tetrominoes[key].color,
+                    type: key
+                };
+            }
+            
+            // Create a new piece
+            function createNewPiece() {
+                currentPiece = getRandomTetromino();
+                currentPosition = {
+                    x: Math.floor((boardWidth - currentPiece.shape[0].length) / 2),
+                    y: 0
+                };
+                
+                // Check for collision (game over)
+                if (checkCollision(currentPosition.x, currentPosition.y, currentPiece.shape)) {
+                    gameOver();
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Draw the current piece on the board
+            function drawPiece() {
+                clearPiece();
+                if (!currentPiece) return;
+                
+                const shape = currentPiece.shape;
+                const color = currentPiece.color;
+                
+                for (let y = 0; y < shape.length; y++) {
+                    for (let x = 0; x < shape[y].length; x++) {
+                        if (shape[y][x] !== 0) {
+                            const boardX = currentPosition.x + x;
+                            const boardY = currentPosition.y + y;
+                            
+                            // Only draw if in bounds
+                            if (boardY >= 0 && boardY < boardHeight && boardX >= 0 && boardX < boardWidth) {
+                                const cell = document.querySelector(`.cell[data-x="${boardX}"][data-y="${boardY}"]`);
+                                if (cell) {
+                                    cell.classList.add('tetromino', color);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Clear the current piece from the board (visual only)
+            function clearPiece() {
+                const cells = document.querySelectorAll('.cell.tetromino');
+                cells.forEach(cell => {
+                    cell.classList.remove('tetromino', 'i-block', 'j-block', 'l-block', 'o-block', 's-block', 't-block', 'z-block');
+                });
+            }
+            
+            // Check for collisions
+            function checkCollision(x, y, shape) {
+                for (let row = 0; row < shape.length; row++) {
+                    for (let col = 0; col < shape[row].length; col++) {
+                        if (shape[row][col] !== 0) {
+                            const boardX = x + col;
+                            const boardY = y + row;
+                            
+                            // Check if out of bounds
+                            if (boardX < 0 || boardX >= boardWidth || boardY >= boardHeight) {
+                                return true;
+                            }
+                            
+                            // Check if already filled
+                            if (boardY >= 0 && board[boardY][boardX] !== 0) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            
+            // Move the current piece
+            function movePiece(dx, dy) {
+                if (isGameOver || isPaused) return false;
+                
+                const newX = currentPosition.x + dx;
+                const newY = currentPosition.y + dy;
+                
+                if (!checkCollision(newX, newY, currentPiece.shape)) {
+                    currentPosition.x = newX;
+                    currentPosition.y = newY;
+                    drawPiece();
+                    return true;
+                }
+                
+                // If we couldn't move down, lock the piece
+                if (dy > 0) {
+                    lockPiece();
+                    return false;
+                }
+                
+                return false;
+            }
+            
+            // Rotate the current piece
+            function rotatePiece(counterClockwise = false) {
+                if (isGameOver || isPaused) return;
+                
+                // Clone the current shape
+                const currentShape = currentPiece.shape;
+                const length = currentShape.length;
+                
+                // Create a new rotated shape
+                let newShape = Array.from({ length }, () => Array(length).fill(0));
+                
+                if (counterClockwise) {
+                    // Rotate counter-clockwise
+                    for (let y = 0; y < length; y++) {
+                        for (let x = 0; x < length; x++) {
+                            newShape[length - 1 - x][y] = currentShape[y][x];
+                        }
+                    }
+                } else {
+                    // Rotate clockwise
+                    for (let y = 0; y < length; y++) {
+                        for (let x = 0; x < length; x++) {
+                            newShape[x][length - 1 - y] = currentShape[y][x];
+                        }
+                    }
+                }
+                
+                // Check if rotation is possible
+                if (!checkCollision(currentPosition.x, currentPosition.y, newShape)) {
+                    rotateSound.currentTime = 0;
+                    rotateSound.play().catch(e => console.error("Audio play failed:", e));
+                    currentPiece.shape = newShape;
+                    drawPiece();
+                } else {
+                    // Try wall kick - move piece around to make space for rotation
+                    const kicks = [
+                        { x: 1, y: 0 },  // right
+                        { x: -1, y: 0 }, // left
+                        { x: 0, y: -1 }, // up
+                        { x: 2, y: 0 },  // 2 spaces right
+                        { x: -2, y: 0 }  // 2 spaces left
+                    ];
+                    
+                    for (const kick of kicks) {
+                        if (!checkCollision(currentPosition.x + kick.x, currentPosition.y + kick.y, newShape)) {
+                            currentPosition.x += kick.x;
+                            currentPosition.y += kick.y;
+                            currentPiece.shape = newShape;
+                            rotateSound.currentTime = 0;
+                            rotateSound.play().catch(e => console.error("Audio play failed:", e));
+                            drawPiece();
+                            return;
+                        }
+                    }
+                }
+            }
+            
+            // Lock the current piece into the board
+            function lockPiece() {
+                const shape = currentPiece.shape;
+                const color = currentPiece.type;
+                
+                for (let y = 0; y < shape.length; y++) {
+                    for (let x = 0; x < shape[y].length; x++) {
+                        if (shape[y][x] !== 0) {
+                            const boardX = currentPosition.x + x;
+                            const boardY = currentPosition.y + y;
+                            
+                            if (boardY >= 0 && boardY < boardHeight && boardX >= 0 && boardX < boardWidth) {
+                                board[boardY][boardX] = color;
+                                
+                                // Update the appearance of the locked cell
+                                const cell = document.querySelector(`.cell[data-x="${boardX}"][data-y="${boardY}"]`);
+                                if (cell) {
+                                    cell.classList.remove('tetromino');
+                                    cell.classList.add(currentPiece.color);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                clearLines();
+                createNewPiece();
+            }
+            
+            // Check and clear completed lines
+            function clearLines() {
+                let linesCleared = 0;
+                
+                for (let y = boardHeight - 1; y >= 0; y--) {
+                    const isLineComplete = board[y].every(cell => cell !== 0);
+                    
+                    if (isLineComplete) {
+                        linesCleared++;
+                        // Move all rows above down one
+                        for (let yy = y; yy > 0; yy--) {
+                            for (let x = 0; x < boardWidth; x++) {
+                                board[yy][x] = board[yy - 1][x];
+                            }
+                        }
+                        
+                        // Clear top row
+                        board[0] = Array(boardWidth).fill(0);
+                        
+                        // Instead of recursing, increment y to check the same row again
+                        y++; 
+                    }
+                }
+                
+                if (linesCleared > 0) {
+                    lineSound.currentTime = 0;
+                    lineSound.play().catch(e => console.error("Audio play failed:", e));
+                    
+                    updateScore(linesCleared);
+                    updateBoard();
+                }
+            }
+            
+            // Update the visual board to match the data structure
+            function updateBoard() {
+                for (let y = 0; y < boardHeight; y++) {
+                    for (let x = 0; x < boardWidth; x++) {
+                        const cell = document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
+                        if (cell) {
+                            // Clear all class styles first
+                            cell.classList.remove('tetromino', 'i-block', 'j-block', 'l-block', 'o-block', 's-block', 't-block', 'z-block');
+                            
+                            // Apply the appropriate style based on board data
+                            if (board[y][x] !== 0) {
+                                cell.classList.add(tetrominoes[board[y][x]].color);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Update the score
+            function updateScore(linesCleared) {
+                // Different points for different number of lines cleared
+                const linePoints = [0, 100, 300, 500, 800]; // 0, 1, 2, 3, 4 lines
+                score += linePoints[linesCleared] * level;
+                lines += linesCleared;
+                
+                // Update level every 10 lines
+                const newLevel = Math.floor(lines / 10) + 1;
+                if (newLevel > level) {
+                    level = newLevel;
+                    // Make the game faster
+                    dropSpeed = Math.max(100, initialSpeed - (level - 1) * 100);
+                    
+                    if (gameInterval) {
+                        clearInterval(gameInterval);
+                        gameInterval = setInterval(tick, dropSpeed);
+                    }
+                }
+                
+                // Update the UI
+                document.getElementById('score').textContent = score;
+                document.getElementById('level').textContent = level;
+                document.getElementById('lines').textContent = lines;
+            }
+            
+            // Hard drop the piece (drop all the way down)
+            function hardDrop() {
+                if (isGameOver || isPaused) return;
+                
+                let droppedRows = 0;
+                while (movePiece(0, 1)) {
+                    droppedRows++;
+                }
+                
+                // Add points for hard drop
+                if (droppedRows > 0) {
+                    score += droppedRows * 2;
+                    document.getElementById('score').textContent = score;
+                }
+            }
+            
+            // Game over
+            function gameOver() {
+                isGameOver = true;
+                gameOverSound.play().catch(e => console.error("Audio play failed:", e));
+                
+                if (gameInterval) {
+                    clearInterval(gameInterval);
+                    gameInterval = null;
+                }
+                
+                document.getElementById('final-score').textContent = score;
+                document.getElementById('game-over').style.display = 'flex';
+            }
+            
+            // Toggle pause/play
+            function togglePause() {
+                const pausePlayBtn = document.getElementById('pause-play');
+                const pauseScreen = document.getElementById('pause-screen');
+                
+                if (isGameOver) return;
+                
+                isPaused = !isPaused;
+                
+                if (isPaused) {
+                    clearInterval(gameInterval);
+                    gameInterval = null;
+                    pausePlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    pauseScreen.style.display = 'flex';
+                } else {
+                    gameInterval = setInterval(tick, dropSpeed);
+                    pausePlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    pauseScreen.style.display = 'none';
+                }
+            }
+            
+            // Start a new game
+            function startGame() {
+                // Reset game state
+                isGameOver = false;
+                isPaused = false;
+                score = 0;
+                level = 1;
+                lines = 0;
+                dropSpeed = initialSpeed;
+                board = Array(boardHeight).fill().map(() => Array(boardWidth).fill(0));
+                
+                // Update UI
+                document.getElementById('score').textContent = score;
+                document.getElementById('level').textContent = level;
+                document.getElementById('lines').textContent = lines;
+                document.getElementById('game-over').style.display = 'none';
+                document.getElementById('pause-screen').style.display = 'none';
+                document.getElementById('pause-play').innerHTML = '<i class="fas fa-pause"></i>';
+                
+                // Reset the board
+                initBoard();
+                
+                // Create first piece
+                createNewPiece();
+                drawPiece();
+                
+                // Start the game loop
+                if (gameInterval) {
+                    clearInterval(gameInterval);
+                }
+                gameInterval = setInterval(tick, dropSpeed);
+            }
+            
+            // Game tick - called on each interval
+            function tick() {
+                if (isGameOver || isPaused) return;
+                movePiece(0, 1);
+            }
+            
+            // Button controls
+            function setupControls() {
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => {
+                    if (isGameOver) return;
+                    
+                    switch (e.key) {
+                        case 'ArrowLeft':
+                            movePiece(-1, 0);
+                            moveSound.currentTime = 0;
+                            moveSound.play().catch(err => {});
+                            break;
+                        case 'ArrowRight':
+                            movePiece(1, 0);
+                            moveSound.currentTime = 0;
+                            moveSound.play().catch(err => {});
+                            break;
+                        case 'ArrowDown':
+                            movePiece(0, 1);
+                            break;
+                        case 'ArrowUp':
+                            rotatePiece();
+                            break;
+                        case ' ':
+                            hardDrop();
+                            break;
+                        case 'z':
+                        case 'Z':
+                            rotatePiece(true);
+                            break;
+                        case 'p':
+                        case 'P':
+                            togglePause();
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                
+                // Touch button controls
+                document.getElementById('left').addEventListener('click', () => {
+                    movePiece(-1, 0);
+                    moveSound.currentTime = 0;
+                    moveSound.play().catch(err => {});
+                });
+                
+                document.getElementById('right').addEventListener('click', () => {
+                    movePiece(1, 0);
+                    moveSound.currentTime = 0;
+                    moveSound.play().catch(err => {});
+                });
+                
+                document.getElementById('soft-drop').addEventListener('click', () => {
+                    movePiece(0, 1);
+                });
+                
+                document.getElementById('hard-drop').addEventListener('click', () => {
+                    hardDrop();
+                });
+                
+                document.getElementById('rotate').addEventListener('click', () => {
+                    rotatePiece();
+                });
+                
+                document.getElementById('rotate-counter').addEventListener('click', () => {
+                    rotatePiece(true);
+                });
+                
+                document.getElementById('pause-play').addEventListener('click', () => {
+                    togglePause();
+                });
+                
+                document.getElementById('restart').addEventListener('click', () => {
+                    startGame();
+                });
+                
+                // Touch events for swipe controls
+                const boardEl = document.getElementById('board');
+                
+                boardEl.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+                
+                boardEl.addEventListener('touchmove', (e) => {
+                    if (isGameOver || isPaused) return;
+                    e.preventDefault(); // Prevent scrolling
+                }, { passive: false });
+                
+                boardEl.addEventListener('touchend', (e) => {
+                    if (isGameOver || isPaused) return;
+                    
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    const diffX = touchEndX - touchStartX;
+                    const diffY = touchEndY - touchStartY;
+                    
+                    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffY) < swipeThreshold) {
+                        // Horizontal swipe
+                        if (diffX > 0) {
+                            movePiece(1, 0); // Right
+                            moveSound.currentTime = 0;
+                            moveSound.play().catch(err => {});
+                        } else {
+                            movePiece(-1, 0); // Left
+                            moveSound.currentTime = 0;
+                            moveSound.play().catch(err => {});
+                        }
+                    } else if (Math.abs(diffY) > swipeThreshold && Math.abs(diffX) < swipeThreshold) {
+                        // Vertical swipe
+                        if (diffY > 0) {
+                            hardDrop(); // Down
+                        } else {
+                            rotatePiece(); // Up
+                        }
+                    }
+                }, { passive: true });
+                
+                // Double tap to rotate
+                let lastTap = 0;
+                boardEl.addEventListener('touchend', (e) => {
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTap;
+                    if (tapLength < 300 && tapLength > 0) {
+                        rotatePiece();
+                        e.preventDefault();
+                    }
+                    lastTap = currentTime;
+                }, { passive: true });
+            }
+            
+            // Fix for iOS Safari 100vh issue
+            function fixIOSViewportHeight() {
+                const viewportHeight = () => {
+                    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+                };
+                
+                window.addEventListener('resize', viewportHeight);
+                window.addEventListener('orientationchange', viewportHeight);
+                viewportHeight();
+            }
+            
+            // Initialize the game
+            function init() {
+                fixIOSViewportHeight();
+                initBoard();
+                setupControls();
+                startGame();
+                
+                // Prevent context menu on touch devices
+                document.addEventListener('contextmenu', e => e.preventDefault());
+            }
+            
+            // Start the game when page loads
+            init();
+        });
     </script>
-
 </body>
-
 </html>
