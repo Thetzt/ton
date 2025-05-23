@@ -2,9 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>WalletConnect Demo</title>
-  <script src="https://unpkg.com/@web3modal/standalone@3.0.0/dist/index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <title>WalletConnect All Wallets Demo</title>
+  <script type="module">
+    import { Web3Modal } from "https://unpkg.com/@web3modal/standalone@3.0.0/dist/index.js";
+    import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.esm.min.js";
+
+    const projectId = "a077335c41cfd0d8e5f10d6ceafb02d2"; // your actual WalletConnect Project ID
+
+    const modal = Web3Modal({
+      projectId,
+      themeMode: 'light',
+      walletConnectVersion: 2,
+      chains: [1], // Ethereum Mainnet. Use 137 for Polygon, etc.
+    });
+
+    let signer;
+
+    window.connectWallet = async () => {
+      console.log("Connect button clicked");
+      try {
+        const provider = await modal.connect();
+        console.log("Provider:", provider);
+
+        const ethersProvider = new ethers.providers.Web3Provider(provider);
+        signer = ethersProvider.getSigner();
+
+        const address = await signer.getAddress();
+        console.log("Connected address:", address);
+        document.getElementById("status").innerText = "Connected: " + address;
+      } catch (err) {
+        console.error("Connection error:", err);
+        document.getElementById("status").innerText = "Connection failed: " + err.message;
+      }
+    };
+
+    window.signTransaction = async () => {
+      console.log("Sign button clicked");
+      if (!signer) {
+        alert("Connect your wallet first");
+        return;
+      }
+
+      const tx = {
+        to: "0x000000000000000000000000000000000000dead",
+        value: ethers.utils.parseEther("0.001"),
+      };
+
+      try {
+        const txResponse = await signer.sendTransaction(tx);
+        console.log("Transaction hash:", txResponse.hash);
+        document.getElementById("status").innerText = "Tx sent: " + txResponse.hash;
+      } catch (err) {
+        console.error("Transaction failed:", err);
+        document.getElementById("status").innerText = "Tx failed: " + err.message;
+      }
+    };
+  </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,56 +89,11 @@
 </head>
 <body>
 
-  <h1>Connect Wallet + Send Transaction</h1>
+  <h1>WalletConnect v2 Demo</h1>
   <button onclick="connectWallet()">Connect Wallet</button>
   <button onclick="signTransaction()">Sign Transaction</button>
 
   <div id="status">Not connected</div>
-
-  <script type="module">
-    const projectId = "a077335c41cfd0d8e5f10d6ceafb02d2";
-
-    const modal = window.Web3Modal.default({
-      projectId,
-      themeMode: 'light',
-      walletConnectVersion: 2,
-      chains: [1], // Ethereum Mainnet; use 137 for Polygon, etc.
-    });
-
-    let signer;
-
-    async function connectWallet() {
-      try {
-        const provider = await modal.connect();
-        const ethersProvider = new ethers.providers.Web3Provider(provider);
-        signer = ethersProvider.getSigner();
-
-        const address = await signer.getAddress();
-        document.getElementById("status").innerText = "Connected: " + address;
-      } catch (err) {
-        document.getElementById("status").innerText = "Connection failed: " + err.message;
-      }
-    }
-
-    async function signTransaction() {
-      if (!signer) {
-        alert("Connect your wallet first");
-        return;
-      }
-
-      const tx = {
-        to: "0x000000000000000000000000000000000000dead",  // Example recipient
-        value: ethers.utils.parseEther("0.001")
-      };
-
-      try {
-        const txResponse = await signer.sendTransaction(tx);
-        document.getElementById("status").innerText = "Tx sent: " + txResponse.hash;
-      } catch (err) {
-        document.getElementById("status").innerText = "Tx failed: " + err.message;
-      }
-    }
-  </script>
 
 </body>
 </html>
