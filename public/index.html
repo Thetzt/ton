@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API Key Test</title>
+</head>
+<body>
+  <h2>Check JustAnotherPanel API Key</h2>
+  <button onclick="checkApi()">Check API</button>
+  <p id="result"></p>
+
+  <script>
+    function checkApi() {
+      const result = document.getElementById('result');
+      result.textContent = 'Checking...';
+
+      fetch('/check-api', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.balance !== undefined) {
+          result.textContent = `✅ Key is valid. Balance: ${data.balance} ${data.currency}`;
+        } else {
+          result.textContent = `❌ Error: ${data.error || 'Unknown error'}`;
+        }
+      })
+      .catch(err => {
+        result.textContent = `⚠️ Network error: ${err}`;
+      });
+    }
+  </script>
+</body>
+</html>
